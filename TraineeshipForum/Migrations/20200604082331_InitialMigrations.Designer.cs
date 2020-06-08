@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TraineeshipForum.Data;
 
-namespace TraineeshipForum.Data.Migrations
+namespace TraineeshipForum.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200604082331_InitialMigrations")]
+    partial class InitialMigrations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -268,34 +270,6 @@ namespace TraineeshipForum.Data.Migrations
                     b.ToTable("Posts");
                 });
 
-            modelBuilder.Entity("TraineeshipForum.Models.Entities.Reply", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Content")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("PostId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PostId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Replies");
-                });
-
             modelBuilder.Entity("TraineeshipForum.Models.Entities.Topic", b =>
                 {
                     b.Property<int>("Id")
@@ -380,17 +354,6 @@ namespace TraineeshipForum.Data.Migrations
                     b.HasOne("TraineeshipForum.Models.Entities.Topic", "Topic")
                         .WithMany("Posts")
                         .HasForeignKey("TopicId");
-
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("TraineeshipForum.Models.Entities.Reply", b =>
-                {
-                    b.HasOne("TraineeshipForum.Models.Entities.Post", "Post")
-                        .WithMany("Replies")
-                        .HasForeignKey("PostId");
 
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
                         .WithMany()

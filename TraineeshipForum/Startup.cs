@@ -1,11 +1,16 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TraineeshipForum.Data;
+using TraineeshipForum.Services_Interfaces.Categories;
+using TraineeshipForum.Services_Interfaces.EmailConfirmation;
+using TraineeshipForum.Services_Interfaces.Topics;
+using WebPWrecover.Services;
 
 namespace TraineeshipForum
 {
@@ -28,7 +33,11 @@ namespace TraineeshipForum
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
+            services.AddScoped<ITopic, TopicService>();
+            services.AddScoped<ICategory, CategoryService>();
 
+            services.AddTransient<IEmailSender, EmailSender>();
+            services.Configure<AuthMessageSenderOptions>(Configuration);
             services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("ApplicationDbContext")));
         }

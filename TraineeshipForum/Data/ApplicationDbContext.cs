@@ -12,7 +12,6 @@ namespace TraineeshipForum.Data
         }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Post> Posts { get; set; }
-        public DbSet<Reply> Replies { get; set; }
         public DbSet<Topic> Topics { get; set; }
     }
 }

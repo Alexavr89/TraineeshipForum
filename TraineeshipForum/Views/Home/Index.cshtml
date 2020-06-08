@@ -1,8 +1,71 @@
-﻿@{
+﻿@model TraineeshipForum.Models.Pages.HomePage
+
+@{
     ViewData["Title"] = "Home Page";
+    Layout = "/Views/Shared/_Layout.cshtml";
 }
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    @if (User.IsInRole("Admin"))
+    {
+        <a asp-controller="Categories" asp-action="Create">Add Category</a>
+    }
+</div>
+
+<div class="categories-and-topics">
+    <div class="column-categories">
+        <div class="category-list">
+            @foreach (var category in Model.Categories)
+            {
+                <div class="category-group-name">
+                    
+                </div>
+                <div class="category-container">
+                    <a class="link-category-with-description" asp-controller="Topics" asp-action="TopicsByCategory" asp-route-id="@category.Id" onmouseover="this.style.backgroundColor = '#ededed';" onmouseout="this.style.backgroundColor = 'rgba(221, 221, 221, 0.05)'">
+                        <div class="category-information">
+                            <h4>@Html.DisplayFor(modelCategory => category.Title)</h4>
+                            <h5>@Html.DisplayFor(modelCategory => category.Description)</h5>
+                        </div>
+                    </a>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-controller="Categories" asp-action="Edit" asp-route-id="@category.Id">Edit</a>
+                        <a asp-controller="Categories" asp-action="Delete" asp-route-id="@category.Id">Delete</a>
+                    }
+                    </div>
+            }
+        </div>
+    </div>
+    <div class="topics">
+        <div class="latest-topics-list">
+            <div class="table-heading">
+                Latest Topics
+            </div>
+            @foreach (var topic in Model.Topics)
+            {
+                <div class="latest-topics-list-item">
+                    <div class="title-and-post-count">
+                        <div class="topics-link">
+                            <a asp-controller="Posts" asp-action="PostsByTopic" asp-route-id="@topic.TopicId" asp-route-categoryId="@topic.CategoryId" class="home-topic-title">@Html.DisplayFor(modelTopic => topic.TopicTitle)</a>
+                        </div>
+                        <div class="number-of-posts">
+                            <a class="posts-map">@Html.DisplayFor(modelTopic => topic.PostCount)</a> @*Replace anchor in this line*@
+                        </div>
+                    </div>
+                    <div class="category-and-age">
+                        <a asp-controller="Topics" asp-action="TopicsByCategory" asp-route-id="@topic.CategoryId">
+                           @Html.DisplayFor(modelTopic => topic.CategoryTitle)
+                        </a>
+                        <a class="age">
+                            @Html.DisplayFor(modelTopic => topic.DateCreated)
+                        </a>
+                    </div>
+                </div>
+            }
+        <div class="more-topics">
+            <a asp-controller="Topics" asp-action="Index" class="btn btn-info btn-topics">More</a>
+        </div>
+        </div>
+    </div>
 </div>

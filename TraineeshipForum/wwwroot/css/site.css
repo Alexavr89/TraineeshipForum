@@ -69,3 +69,274 @@ body {
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
+
+/* Home Index */
+.categories-and-topics {
+    display: flex;
+}
+
+.column-categories {
+    margin-right: 3em;
+    flex: 1 0 0px;
+    flex-direction: row;
+    min-width: 300px;
+    box-sizing: border-box;
+}
+
+.category-group-name {
+    margin-top: 1.15em;
+    margin-bottom: 0.5em;
+}
+
+.link-category-with-description {
+    display: flex;
+    padding: 1em;
+    border: solid 1px rgba(221,221,221,0.15);
+    background-color: rgba(221,221,221,0.05);
+    box-shadow: 0 0 0 1px #222;
+    text-decoration: none !important;
+}
+
+.topics {
+    min-width: 300px;
+}
+
+.table-heading {
+    padding: 2.15em, 0.25em, 0.5em, 0.25em;
+    border-bottom: 3px solid #313131;
+}
+
+.latest-topics-list-item {
+    padding: 0.5em 1em 1em 0.5em;
+    border-bottom: 1px solid #313131;
+}
+
+.topics-link {
+    display: flex;
+    align-items: center;
+    flex: 15;
+    max-width: unset;
+}
+
+.title-and-post-count {
+    display: flex;
+}
+
+.home-topic-title {
+    padding: 0 0 0 0.25em;
+}
+
+.number-of-posts {
+    display: flex;
+    padding: 0.25em 0;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.posts-map {
+    display: flex;
+    padding: 0.25em 0;
+    line-height: normal;
+}
+
+.category-and-age {
+    display: flex;
+    line-height: 1.3;
+    box-sizing: border-box;
+}
+
+.age {
+    margin-left: auto;
+}
+
+.more-topics {
+    margin-top: 1em;
+    box-sizing: border-box;
+}
+
+.btn-topics {
+    box-sizing: border-box;
+    float: right
+}
+
+
+/* PostsByTopic */
+.title {
+    text-transform:uppercase;
+}
+
+.topic-title {
+    padding-top: 60px;
+    margin-bottom: 16.4px;
+}
+
+.title-wrapper {
+    margin-bottom: 1em;
+    width: 100%
+}
+
+.topic-category {
+    box-sizing: border-box
+}
+
+.topic-title-in-posts {
+    text-transform: uppercase;
+}
+
+.category-link {
+    text-decoration: none;
+}
+
+.topic-post {
+    margin-right: 230px;
+    border-bottom: solid 1px rgba(222,226,230,1);
+    border-top: solid 1px rgba(222,226,230,1);
+}
+
+.post-avatar {
+    width: 100px;
+    padding-top: 20px;
+}
+
+.topic-row {
+    display: flex;
+}
+
+.post-body {
+    flex: 1 1 auto;
+    padding-top: 20px;
+}
+
+.post-author-and-time {
+    display: flex;
+    padding: 0 11px 0 11px;
+}
+
+.post-author {
+    flex: 1 1 auto;
+}
+
+.post-content {
+    margin-top: 20px;
+    padding: 0 11px 0 11px;
+}
+
+.edit-section {
+    margin-top: 2em;
+}
+
+.edit-navigation {
+    display: flex;
+}
+
+.tool-space {
+    margin-bottom: 30px;
+}
+
+.post-tools {
+    padding: 10px 0;
+    margin-right: 230px;
+}
+
+.post-reply-area {
+    padding: 10px 10px 0 0;
+    float: left;
+    margin-right: 230px;
+}
+
+.post-reply-button {
+    margin-bottom: 5px;
+    margin-right: 10px;
+}
+
+.edit-post {
+    text-decoration: none !important;
+}
+
+/* TopicsByCategory */
+
+    .dropdown {
+        flex: 1 1 auto;
+    }
+
+    .category-navigation {
+        display: flex;
+        margin-top: 60px;
+        margin-bottom: 20px;
+    }
+
+    .create-topic {
+        font-size: 1.2em;
+        order: 5;
+        align-self: center;
+        margin-left: 8px;
+    }
+
+    .edit, .delete {
+    width:25px;
+    padding:0 5px 0 0;
+    }
+
+    .actions {
+    margin-left:auto;
+    }
+
+    .edit-topic {
+    text-decoration: none !important;
+    }
+
+/* Dropdown menu in categories */
+
+.dropbtn {
+    text-transform:uppercase;
+    border-radius: .25rem;
+    padding: .375rem .75rem;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
+
+#myInput {
+    box-sizing: border-box;
+    background-image: url('searchicon.png');
+    background-position: 14px 12px;
+    background-repeat: no-repeat;
+    font-size: 16px;
+    padding: 14px 20px 12px 45px;
+    border: none;
+    border-bottom: 1px solid #ddd;
+}
+
+    #myInput:focus {
+        outline: 3px solid #ddd;
+    }
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f6f6f6;
+    min-width: 230px;
+    overflow: auto;
+    border: 1px solid #ddd;
+    z-index: 1;
+}
+
+    .dropdown-content a {
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+    }
+
+.dropdown a:hover {
+    background-color: #ddd;
+}
+
+.show {
+    display: block;
+}

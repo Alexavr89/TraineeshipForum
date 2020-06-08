@@ -1,0 +1,73 @@
+﻿@model TraineeshipForum.Models.Pages.TopicPage
+
+@{
+    ViewData["Title"] = "Detailed topic page";
+}
+
+
+        <div class="topic-title">
+            <div class="title-wrapper">
+                <h1 class="title">@Html.DisplayFor(modelTopic => Model.TopicTitle)</h1>
+                <div class="topic-category">
+                    <a class="category-link" asp-controller="Topics" asp-action="TopicsByCategory" asp-route-id="@Model.CategoryId">
+                        @Html.DisplayFor(modelTopic => Model.CategoryTitle)
+                    </a>
+                </div>
+            </div>
+        </div>
+        @foreach (var post in Model.Posts)
+        {
+            <div class="topic-post">
+                <article>
+                    <div class="topic-row">
+                        <div class="post-avatar">
+                            <a class="avatar">
+                                <img />
+                            </a>
+                        </div>
+                        <div class="post-body">
+                            <div class="post-author-and-time">
+                                <div class="post-author">
+                                    @Html.DisplayFor(modelPost => post.AuthorName)
+                                </div>
+                                <div>
+                                    @Html.DisplayFor(modelPost => post.DatePosted)
+                                </div>
+                            </div>
+                            <div>
+                                <div class="post-content">
+                                    @Html.DisplayFor(modelPost => post.Content)
+                                </div>
+                                <section class="edit-section">
+                                    <nav class="edit-navigation">
+                                        <div class="actions">
+                                            @if (User.Identity.Name == post.AuthorName)
+                                            {
+                                                <a class="edit-post" asp-controller="Posts" asp-action="Edit" asp-route-id="@post.PostId" asp-route-topicId="@post.TopicId" asp-route-categoryId="@post.CategoryId">
+                                                    <img class="edit" src="~/lib/images/Edit.jpg" alt="Edit" title="Edit Post">
+                                                </a>
+                                                <a asp-controller="Posts" asp-action="Delete" asp-route-id="@post.PostId" asp-route-topicId="@post.TopicId" asp-route-categoryId="@post.CategoryId">
+                                                    <img class="delete" src="~/lib/images/Delete.jpg" alt="Delete" title="Delete Post">
+                                                </a>
+                                            }
+                                        </div>
+                                    </nav>
+                                </section>
+                            </div>
+
+                            <section class="tool-space"></section>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        }
+        <div class="post-reply">
+            <div class="post-tools"></div>
+            <div class="post-reply-area">
+                <a class="btn btn-info post-reply-button" asp-controller="Posts" asp-action="Create" asp-route-id="@Model.TopicId" asp-route-categoryId="@Model.CategoryId">
+                    <span>Reply</span>
+                </a>
+            </div>
+        </div>
+
+

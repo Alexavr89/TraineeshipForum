@@ -1,0 +1,66 @@
+﻿@model TraineeshipForum.Models.Pages.CategoryPage
+
+@{
+    ViewData["Title"] = "Detailed category page";
+
+}
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(modelTopic => Model.Topics.FirstOrDefault().TopicTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(modelTopic => Model.Topics.FirstOrDefault().CategoryTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(modelTopic => Model.Topics.FirstOrDefault().AuthorName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(modelTopic => Model.Topics.FirstOrDefault().PostCount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(modelTopic => Model.Topics.FirstOrDefault().DateCreated)
+            </th>
+            <th>
+                Settings
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var topic in Model.Topics)
+        {
+        <tr>
+            <td>
+                <a asp-controller="Posts" asp-action="PostsByTopic" asp-route-id="@topic.TopicId" asp-route-categoryId="@topic.CategoryId">@Html.DisplayFor(modelTopic => topic.TopicTitle)</a>
+            </td>
+            <td>
+                <a asp-controller="Topics" asp-action="TopicsByCategory" asp-route-id="@topic.CategoryId">@Html.DisplayFor(modelTopic => topic.CategoryTitle)</a>
+            </td>
+            <td>
+                <a>@Html.DisplayFor(modelTopic => topic.AuthorName)</a>
+            </td>
+            <td>
+                <a>@Html.DisplayFor(modelTopic => topic.PostCount)</a>
+            </td>
+            <td>
+                <a>@Html.DisplayFor(modelTopic => topic.DateCreated)</a>
+            </td>
+            <td>
+                @if (User.Identity.Name == topic.AuthorName)
+                {
+                    <a class="edit-topic" asp-controller="Topics" asp-action="Edit" asp-route-id="@topic.TopicId" asp-route-categoryId="@topic.CategoryId">
+                        <img class="edit" src="~/lib/images/Edit.jpg" alt="Edit" title="Edit Topic">
+                    </a>
+                    <a asp-controller="Topics" asp-action="Delete" asp-route-id="@topic.TopicId" asp-route-categoryId="@topic.CategoryId">
+                        <img class="delete" src="~/lib/images/Delete.jpg" alt="Delete" title="Delete Topic">
+                    </a>
+                }
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+

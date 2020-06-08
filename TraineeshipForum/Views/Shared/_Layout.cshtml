@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - TraineeshipForum</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/site.css" type="text/css" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">TraineeshipForum</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -29,8 +29,26 @@
                 </div>
             </div>
         </nav>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3" style="position:sticky">
+            <div class="wrap" style="padding:0 40px; max-width:1600px; margin-right:auto; box-sizing:border-box;">
+                <div class="contents" style="box-sizing:border-box;">
+                    <div class="bread-crumb">
+                        @*@Html.ActionLink("Home", "Index", "Home")
+                        @if (ViewContext.RouteData.Values["controller"].ToString() != "Home")
+                        {
+                            @:> @Html.ActionLink(ViewContext.RouteData.Values["controller"].ToString(), ViewContext.RouteData.Values["action"].ToString(), ViewContext.RouteData.Values["controller"].ToString(), ViewContext.RouteData.Values["id"].ToString())
+                        }
+                        @if (ViewContext.RouteData.Values["action"].ToString() != "Index")
+                        {
+                            @:> @Html.ActionLink(ViewContext.RouteData.Values["action"].ToString(), ViewContext.RouteData.Values["action"].ToString(), ViewContext.RouteData.Values["controller"].ToString(), ViewContext.RouteData.Values["id"].ToString())
+                        }*@
+                        </div>
+                    <div style="order: 1; margin-left:auto; box-sizing:border-box"></div>
+                </div>
+            </div>
+        </nav>
     </header>
-    <div class="container">
+    <div class="container d-flex flex-column" >
         <main role="main" class="pb-3">
             @RenderBody()
         </main>

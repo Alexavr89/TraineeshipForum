@@ -1,22 +1,51 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
+using System.Linq;
+using TraineeshipForum.Data;
 using TraineeshipForum.Models;
+using TraineeshipForum.Models.Pages;
+using TraineeshipForum.Services_Interfaces.Topics;
 
 namespace TraineeshipForum.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly ApplicationDbContext _context;
+        private readonly ITopic _topicService;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context, ITopic topicService)
         {
             _logger = logger;
+            _context = context;
+            _topicService = topicService;
         }
 
         public IActionResult Index()
         {
-            return View();
+            var model = CreateHomePage();
+            return View(model);
+        }
+
+        public HomePage CreateHomePage()
+        {
+            var category = _context.Categories.ToList();
+            var topic = _topicService.GetLatestTopics(3).Select(topic => new TopicListing
+            {
+                CategoryId = topic.Category.Id,//check this
+                TopicId = topic.Id,
+                CategoryTitle = topic.Category.Title,
+                TopicTitle = topic.Title,
+                PostCount = topic.Posts.Count(),//check and explain this
+                DateCreated = topic.Created.ToString()
+            });
+
+            return new HomePage()
+            {
+                Categories = category,
+                Topics = topic
+            };
         }
 
         public IActionResult Privacy()
