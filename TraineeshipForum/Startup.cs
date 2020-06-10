@@ -7,8 +7,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using TraineeshipForum.Data;
+using TraineeshipForum.Models.Entities;
 using TraineeshipForum.Services_Interfaces.Categories;
 using TraineeshipForum.Services_Interfaces.EmailConfirmation;
+using TraineeshipForum.Services_Interfaces.Posts;
 using TraineeshipForum.Services_Interfaces.Topics;
 using WebPWrecover.Services;
 
@@ -29,12 +31,14 @@ namespace TraineeshipForum
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddScoped<ITopic, TopicService>();
             services.AddScoped<ICategory, CategoryService>();
+            services.AddScoped<IPost, PostService>();
 
             services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(Configuration);

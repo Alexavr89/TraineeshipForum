@@ -194,7 +194,7 @@ body {
 }
 
 .post-avatar {
-    width: 100px;
+    width: 85px;
     padding-top: 20px;
 }
 
@@ -251,6 +251,12 @@ body {
 
 .edit-post {
     text-decoration: none !important;
+}
+
+.avatar {
+    margin:2px calc(2px + .55em) 2px 2px;
+    width:76px;
+    height:76px;
 }
 
 /* TopicsByCategory */

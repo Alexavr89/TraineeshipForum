@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Data;
+using System.Linq;
 using System.Threading.Tasks;
 using TraineeshipForum.Data;
 using TraineeshipForum.Models.Entities;
@@ -42,6 +43,11 @@ namespace TraineeshipForum.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    if (_context.Categories.Any(c => c.Title == category.Title))
+                    {
+                        ModelState.AddModelError("Title", "The title is not unique");
+                        return View(category);
+                    }
                     category.Created = DateTime.Now;
 
                     _context.Add(category);

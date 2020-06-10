@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Data;
 using System.Linq;
-using System.Net;
 using System.Threading.Tasks;
 using TraineeshipForum.Data;
 using TraineeshipForum.Models;
@@ -23,9 +22,9 @@ namespace TraineeshipForum.Controllers
         private readonly ITopic _topicService;
         private readonly ICategory _categoryService;
 
-        private static UserManager<IdentityUser> _userManager;
+        private static UserManager<ApplicationUser> _userManager;
 
-        public TopicsController(ApplicationDbContext context, ITopic topicService, ICategory categoryService, UserManager<IdentityUser> userManager)
+        public TopicsController(ApplicationDbContext context, ITopic topicService, ICategory categoryService, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _topicService = topicService;
@@ -69,7 +68,7 @@ namespace TraineeshipForum.Controllers
         {
             var category = _categoryService.GetById(id);
             var topics = category.Topics;
-            var categories = _categoryService.GetAll(); //1.06
+            var categories = _categoryService.GetAll();
 
             var topicListing = topics.Select(topic => new TopicListing
             {
@@ -80,16 +79,16 @@ namespace TraineeshipForum.Controllers
                 TopicTitle = topic.Title
             });
 
-            var categoryListing = categories.Select(category => new CategoryListing //1.06
+            var categoryListing = categories.Select(category => new CategoryListing
             {
-                Title = category.Title,   //1.06
+                Title = category.Title,
                 Id = category.Id
             });
             return new CategoryPage()
             {
                 Topics = topicListing,
                 Category = CreateCategoryListing(category),
-                Categories = categoryListing //1.06
+                Categories = categoryListing
             };
         }
 
@@ -119,12 +118,17 @@ namespace TraineeshipForum.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Title,Created,UserId")] Topic topic, int id)
+        public IActionResult Create([Bind("Title,Created,UserId")] NewTopic topic, int id) //08.06 changed from Topic to NewTopic 
         {
             try
             {
                 if (ModelState.IsValid)
                 {
+                    if (_context.Topics.Any(t => t.Title == topic.Title))
+                    {
+                        ModelState.AddModelError("Title", "The title is not unique");
+                        return View(topic);
+                    }
                     var userId = _userManager.GetUserId(User);
                     var user = _userManager.FindByIdAsync(userId).Result;
                     var category = _categoryService.GetById(id);
@@ -149,19 +153,18 @@ namespace TraineeshipForum.Controllers
 
         // GET: Topics/Edit/5
         [Authorize]
-        public async Task<IActionResult> Edit(int? id, int categoryId)
+        public IActionResult Edit(int id)
         {
-            if (id == null)
-            {
-                return Content(HttpStatusCode.NotFound, "Topic does not exist");
-            }
-            var topic = await _context.Topics.FindAsync(id);
+            var topic = _topicService.GetById(id);
             var model = new NewTopic
             {
-                CategoryId = categoryId,
+                CategoryId = topic.Category.Id,
                 Title = topic.Title,
             };
-
+            if (topic.User.UserName != User.Identity.Name)
+            {
+                return NotFound();
+            }
             if (topic == null)
             {
                 return NotFound();
@@ -170,23 +173,19 @@ namespace TraineeshipForum.Controllers
             return View(model);
         }
 
-        private IActionResult Content(HttpStatusCode notFound, string v)
-        {
-            throw new NotImplementedException();
-        }
+        //private IActionResult Content(HttpStatusCode notFound, string v)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         // POST: Topics/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditTopicAsync(int? id, int categoryId)
+        public async Task<IActionResult> EditTopicAsync(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            var topicToUpdate = _context.Topics.Find(id);
+            var topicToUpdate = _topicService.GetById(id);
             if (await TryUpdateModelAsync(topicToUpdate,
                 "",
                 t => t.Title))
@@ -194,7 +193,7 @@ namespace TraineeshipForum.Controllers
                 try
                 {
                     _context.SaveChanges();
-                    return RedirectToAction("TopicsByCategory", "Topics", new { id = categoryId });
+                    return RedirectToAction("TopicsByCategory", "Topics", new { id = topicToUpdate.Category.Id });
                 }
                 catch (DataException /* dex */)
                 {
@@ -207,23 +206,22 @@ namespace TraineeshipForum.Controllers
 
         // GET: Topics/Delete/5
         [Authorize]
-        public async Task<IActionResult> Delete(int categoryId, int? id, bool? saveChangesError = false)
+        public IActionResult Delete(int id, bool? saveChangesError = false)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
             if (saveChangesError.GetValueOrDefault())
             {
                 ViewBag.ErrorMessage = "Delete failed";
             }
-            var topic = await _context.Topics.FindAsync(id);
+            var topic = _topicService.GetById(id);
             var model = new DeleteTopic
             {
-                CategoryId = categoryId,
+                CategoryId = topic.Category.Id,
                 TopicTitle = topic.Title
             };
-
+            if (topic.User.UserName != User.Identity.Name)
+            {
+                return NotFound();
+            }
             if (topic == null)
             {
                 return NotFound();
@@ -235,12 +233,11 @@ namespace TraineeshipForum.Controllers
         // POST: Topics/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int id, int CategoryId)
+        public async Task<IActionResult> Delete(int id)
         {
+            var topicToDelete = _topicService.GetById(id);
             try
             {
-                var topicToDelete = await _context.Topics.FindAsync(id);
-
                 _context.Entry(topicToDelete).State = EntityState.Deleted;
                 await _context.SaveChangesAsync();
             }
@@ -249,7 +246,7 @@ namespace TraineeshipForum.Controllers
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 return RedirectToAction("Delete", new { id, saveChangesError = true });
             }
-            return RedirectToAction("TopicsByCategory", "Topics", new { id = CategoryId });
+            return RedirectToAction("TopicsByCategory", "Topics", new { id = topicToDelete.Category.Id });
         }
     }
 }

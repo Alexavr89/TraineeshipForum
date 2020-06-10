@@ -21,13 +21,12 @@
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
                 <input type="hidden" asp-for="TopicId" />
-                <input type="hidden" asp-for="CategoryId" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="PostsByTopic" asp-controller="Posts" asp-route-id="@Model.TopicId" asp-route-categoryId="@Model.CategoryId">Back to List</a>
+    <a asp-action="PostsByTopic" asp-controller="Posts" asp-route-id="@Model.TopicId">Back to List</a>
 </div>
 

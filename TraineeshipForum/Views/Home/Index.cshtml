@@ -47,7 +47,7 @@
                 <div class="latest-topics-list-item">
                     <div class="title-and-post-count">
                         <div class="topics-link">
-                            <a asp-controller="Posts" asp-action="PostsByTopic" asp-route-id="@topic.TopicId" asp-route-categoryId="@topic.CategoryId" class="home-topic-title">@Html.DisplayFor(modelTopic => topic.TopicTitle)</a>
+                            <a asp-controller="Posts" asp-action="PostsByTopic" asp-route-id="@topic.TopicId" class="home-topic-title">@Html.DisplayFor(modelTopic => topic.TopicTitle)</a>
                         </div>
                         <div class="number-of-posts">
                             <a class="posts-map">@Html.DisplayFor(modelTopic => topic.PostCount)</a> @*Replace anchor in this line*@

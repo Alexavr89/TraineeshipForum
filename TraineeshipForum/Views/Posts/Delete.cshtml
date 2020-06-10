@@ -21,8 +21,7 @@
 
     <form asp-action="Delete" method="post">
         <input type="hidden" name="TopicId" value="@Model.TopicId" />
-        <input type="hidden" name="CategoryId" value="@Model.CategoryId" />
         <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-controller="Posts" asp-action="PostsByTopic" asp-route-id="@Model.TopicId" asp-route-categoryId="@Model.CategoryId">Back to List</a>
+        <a asp-controller="Posts" asp-action="PostsByTopic" asp-route-id="@Model.TopicId">Back to List</a>
     </form>
 </div>

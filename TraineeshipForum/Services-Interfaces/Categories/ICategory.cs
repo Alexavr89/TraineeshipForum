@@ -6,6 +6,6 @@ namespace TraineeshipForum.Services_Interfaces.Categories
     public interface ICategory
     {
         Category GetById(int id);
-        IEnumerable<Category> GetAll(); //1.06
+        IEnumerable<Category> GetAll();
     }
 }

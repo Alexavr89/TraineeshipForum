@@ -9,8 +9,10 @@ using System.Threading.Tasks;
 using TraineeshipForum.Data;
 using TraineeshipForum.Models;
 using TraineeshipForum.Models.Actions.WithPosts;
+using TraineeshipForum.Models.Entities;
 using TraineeshipForum.Models.Pages;
 using TraineeshipForum.Services_Interfaces.Categories;
+using TraineeshipForum.Services_Interfaces.Posts;
 using TraineeshipForum.Services_Interfaces.Topics;
 
 namespace TraineeshipForum.Controllers
@@ -20,37 +22,36 @@ namespace TraineeshipForum.Controllers
         private readonly ApplicationDbContext _context;
         private readonly ITopic _topicService;
         private readonly ICategory _categoryService;
+        private readonly IPost _postService;
 
-        private static UserManager<IdentityUser> _userManager;
+        private static UserManager<ApplicationUser> _userManager;
 
-        public PostsController(ApplicationDbContext context, ITopic topicService, ICategory categoryService, UserManager<IdentityUser> userManager)
+        public PostsController(ApplicationDbContext context, ITopic topicService, ICategory categoryService, UserManager<ApplicationUser> userManager, IPost postService)
         {
             _context = context;
             _topicService = topicService;
             _categoryService = categoryService;
             _userManager = userManager;
+            _postService = postService;
         }
 
-        public IActionResult PostsByTopic(int id, int categoryId) //1.06
+        public IActionResult PostsByTopic(int id)
         {
-            var model = CreatePostsByTopic(id, categoryId);
+            var model = CreatePostsByTopic(id);
 
             return View(model);
         }
 
-        public TopicPage CreatePostsByTopic(int id, int categoryId) //1.06
+        public TopicPage CreatePostsByTopic(int id)
         {
             var topic = _topicService.GetById(id);
             var posts = topic.Posts;
-            var category = _categoryService.GetById(categoryId); //1.06
             var postListing = posts.Select(post => new PostListing
             {
                 AuthorName = post.User.UserName,
                 Content = post.Content,
                 DatePosted = post.Created.ToString(),
                 PostId = post.Id,
-                TopicId = topic.Id,
-                CategoryId = category.Id
                 //     AuthorImageURL = post                 // I will finish with avatars later
             });
 
@@ -58,8 +59,8 @@ namespace TraineeshipForum.Controllers
             {
                 Posts = postListing,
                 TopicTitle = topic.Title,
-                CategoryTitle = category.Title, //1.06
-                CategoryId = category.Id,
+                CategoryTitle = topic.Category.Title,
+                CategoryId = topic.Category.Id,
                 TopicId = topic.Id
             };
         }
@@ -72,11 +73,10 @@ namespace TraineeshipForum.Controllers
 
         // GET: Posts/Create
         [Authorize]
-        public IActionResult Create(int id, int categoryId)
+        public IActionResult Create(int id)
         {
             var model = new NewPost
             {
-                CategoryId = categoryId,
                 TopicId = id,
             };
             return View(model);
@@ -87,7 +87,7 @@ namespace TraineeshipForum.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Content,Created,UserId")] NewPost post, int id, int categoryId)
+        public IActionResult Create([Bind("Content,Created,UserId")] NewPost post, int id)
         {
             try
             {
@@ -105,7 +105,7 @@ namespace TraineeshipForum.Controllers
                     _context.SaveChanges();
 
 
-                    return RedirectToAction("PostsByTopic", "Posts", new { id, categoryId });
+                    return RedirectToAction("PostsByTopic", "Posts", new { id = post.Topic.Id });
                 }
             }
             catch (DataException /* dex */)
@@ -118,20 +118,18 @@ namespace TraineeshipForum.Controllers
 
         // GET: Posts/Edit/5
         [Authorize]
-        public async Task<IActionResult> Edit(int? id, int topicId, int categoryId)
+        public IActionResult Edit(int id)
         {
-            if (id == null)
+            var post = _postService.GetById(id);
+            var model = new NewPost
+            {
+                TopicId = post.Topic.Id,
+                Content = post.Content
+            };
+            if (post.User.UserName != User.Identity.Name)
             {
                 return NotFound();
             }
-
-            var post = await _context.Posts.FindAsync(id);
-            var model = new NewPost
-            {
-                TopicId = topicId,
-                CategoryId = categoryId,
-                Content = post.Content
-            };
 
             if (post == null)
             {
@@ -145,13 +143,9 @@ namespace TraineeshipForum.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditPostAsync(int? id, int topicId, int categoryId)
+        public async Task<IActionResult> EditPostAsync(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            var postToUpdate = _context.Posts.Find(id);
+            var postToUpdate = _postService.GetById(id);
             if (await TryUpdateModelAsync(postToUpdate,
                 "",
                 p => p.Content))
@@ -159,7 +153,7 @@ namespace TraineeshipForum.Controllers
                 try
                 {
                     _context.SaveChanges();
-                    return RedirectToAction("PostsByTopic", "Posts", new { id = topicId, categoryId });
+                    return RedirectToAction("PostsByTopic", "Posts", new { id = postToUpdate.Topic.Id });
                 }
                 catch (DataException /* dex */)
                 {
@@ -172,24 +166,22 @@ namespace TraineeshipForum.Controllers
 
         // GET: Posts/Delete/5
         [Authorize]
-        public async Task<IActionResult> Delete(int topicId, int categoryId, int? id, bool? saveChangesError = false)
+        public IActionResult Delete(int id, bool? saveChangesError = false)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
             if (saveChangesError.GetValueOrDefault())
             {
                 ViewBag.ErrorMessage = "Delete failed";
             }
-            var post = await _context.Posts.FindAsync(id);
+            var post = _postService.GetById(id);
             var model = new DeletePost
             {
-                CategoryId = categoryId,
-                TopicId = topicId,
+                TopicId = post.Topic.Id,
                 PostContent = post.Content
             };
-
+            if (post.User.UserName != User.Identity.Name)
+            {
+                return NotFound();
+            }
             if (post == null)
             {
                 return NotFound();
@@ -201,12 +193,11 @@ namespace TraineeshipForum.Controllers
         // POST: Posts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int id, int TopicId, int CategoryId)
+        public async Task<IActionResult> Delete(int id)
         {
+            var postToDelete = _postService.GetById(id);
             try
             {
-                var postToDelete = await _context.Posts.FindAsync(id);
-
                 _context.Entry(postToDelete).State = EntityState.Deleted;
                 await _context.SaveChangesAsync();
             }
@@ -215,7 +206,7 @@ namespace TraineeshipForum.Controllers
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 return RedirectToAction("Delete", new { id, saveChangesError = true });
             }
-            return RedirectToAction("PostsByTopic", "Posts", new { id = TopicId, categoryId = CategoryId });
+            return RedirectToAction("PostsByTopic", "Posts", new { id = postToDelete.Topic.Id });
         }
     }
 }

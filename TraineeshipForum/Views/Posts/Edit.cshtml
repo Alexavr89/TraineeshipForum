@@ -19,14 +19,13 @@
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
                 <input type="hidden" name="topicId" value="@Model.TopicId" />
-                <input type="hidden" name="categoryId" value="@Model.CategoryId" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-controller="Posts" asp-action="PostsByTopic" asp-route-id="@Model.TopicId" asp-route-categoryId="@Model.CategoryId">Back to List</a>
+    <a asp-controller="Posts" asp-action="PostsByTopic" asp-route-id="@Model.TopicId">Back to List</a>
 </div>
 
 @section Scripts {

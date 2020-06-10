@@ -32,11 +32,10 @@ namespace TraineeshipForum.Services_Interfaces.Topics
             var topic = _context.Topics
                 .Where(t => t.Id == id)
                 .Include(t => t.Posts)
-                    .ThenInclude(t => t.User)
-                .Include(t => t.Posts)
                     .ThenInclude(p => p.User)
                 .Include(t => t.Posts)
                     .ThenInclude(p => p.Topic)
+                .Include(t => t.Category)
                 .FirstOrDefault();
 
             if (topic.Posts == null)

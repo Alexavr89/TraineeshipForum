@@ -6,6 +6,7 @@
     <title>@ViewData["Title"] - TraineeshipForum</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" type="text/css" />
+    <script src="~/js/site.js"></script>
 </head>
 <body>
     <header>
@@ -25,25 +26,13 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3" style="position:sticky">
-            <div class="wrap" style="padding:0 40px; max-width:1600px; margin-right:auto; box-sizing:border-box;">
-                <div class="contents" style="box-sizing:border-box;">
-                    <div class="bread-crumb">
-                        @*@Html.ActionLink("Home", "Index", "Home")
-                        @if (ViewContext.RouteData.Values["controller"].ToString() != "Home")
+                        @if (User.IsInRole("Admin"))
                         {
-                            @:> @Html.ActionLink(ViewContext.RouteData.Values["controller"].ToString(), ViewContext.RouteData.Values["action"].ToString(), ViewContext.RouteData.Values["controller"].ToString(), ViewContext.RouteData.Values["id"].ToString())
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Administration" asp-action="ListRoles">Admin</a>
+                            </li>
                         }
-                        @if (ViewContext.RouteData.Values["action"].ToString() != "Index")
-                        {
-                            @:> @Html.ActionLink(ViewContext.RouteData.Values["action"].ToString(), ViewContext.RouteData.Values["action"].ToString(), ViewContext.RouteData.Values["controller"].ToString(), ViewContext.RouteData.Values["id"].ToString())
-                        }*@
-                        </div>
-                    <div style="order: 1; margin-left:auto; box-sizing:border-box"></div>
+                    </ul>
                 </div>
             </div>
         </nav>

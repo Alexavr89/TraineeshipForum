@@ -33,11 +33,11 @@ namespace TraineeshipForum.Controllers
             var category = _context.Categories.ToList();
             var topic = _topicService.GetLatestTopics(3).Select(topic => new TopicListing
             {
-                CategoryId = topic.Category.Id,//check this
+                CategoryId = topic.Category.Id,
                 TopicId = topic.Id,
                 CategoryTitle = topic.Category.Title,
                 TopicTitle = topic.Title,
-                PostCount = topic.Posts.Count(),//check and explain this
+                PostCount = topic.Posts.Count(),
                 DateCreated = topic.Created.ToString()
             });
 
