@@ -13,5 +13,21 @@ namespace TraineeshipForum.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<Topic> Topics { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Category>()
+                .HasMany(c => c.Topics)
+                .WithOne(t => t.Category)
+                .IsRequired();
+
+            modelBuilder.Entity<Topic>()
+                .HasMany(t => t.Posts)
+                .WithOne(p => p.Topic)
+                .IsRequired();
+        }
     }
 }
+

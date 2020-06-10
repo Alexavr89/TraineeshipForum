@@ -45,7 +45,7 @@ namespace TraineeshipForum.Controllers
             {
                 CategoryId = topic.Category.Id,
                 TopicId = topic.Id,
-                CategoryTitle = topic.Category.Title,
+                CategoryTitle = topic.Title,
                 AuthorName = topic.User.UserName,
                 TopicTitle = topic.Title,
                 PostCount = topic.Posts.Count(),
@@ -140,7 +140,7 @@ namespace TraineeshipForum.Controllers
                     _context.Add(topic);
                     _context.SaveChanges();
 
-                    return RedirectToAction("PostsByTopic", "Posts", new { id = topic.Id, categoryId = id });
+                    return RedirectToAction("PostsByTopic", "Posts", new { id = topic.Id});
                 }
             }
             catch (DataException /* dex */)
@@ -172,11 +172,6 @@ namespace TraineeshipForum.Controllers
 
             return View(model);
         }
-
-        //private IActionResult Content(HttpStatusCode notFound, string v)
-        //{
-        //    throw new NotImplementedException();
-        //}
 
         // POST: Topics/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 

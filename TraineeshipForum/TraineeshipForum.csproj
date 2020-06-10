@@ -17,6 +17,10 @@
     <Compile Remove="Migrations\20200604081717_InitialMigrations.Designer.cs" />
     <Compile Remove="Migrations\20200608105702_Extended_IdentityUser.cs" />
     <Compile Remove="Migrations\20200608105702_Extended_IdentityUser.Designer.cs" />
+    <Compile Remove="Migrations\20200610152001_One-to-Many-Setup.cs" />
+    <Compile Remove="Migrations\20200610152001_One-to-Many-Setup.Designer.cs" />
+    <Compile Remove="Migrations\20200610153404_One-to-Many-Setup.cs" />
+    <Compile Remove="Migrations\20200610153404_One-to-Many-Setup.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
