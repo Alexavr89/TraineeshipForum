@@ -27,6 +27,8 @@
     <Compile Remove="Migrations\20200610153404_One-to-Many-Setup.Designer.cs" />
     <Compile Remove="Migrations\20200610163817_Post.cs" />
     <Compile Remove="Migrations\20200610163817_Post.Designer.cs" />
+    <Compile Remove="Migrations\20200613172050_ApplicationUsers.cs" />
+    <Compile Remove="Migrations\20200613172050_ApplicationUsers.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
