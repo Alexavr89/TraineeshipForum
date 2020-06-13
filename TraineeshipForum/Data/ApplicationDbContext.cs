@@ -27,6 +27,16 @@ namespace TraineeshipForum.Data
                 .HasMany(t => t.Posts)
                 .WithOne(p => p.Topic)
                 .IsRequired();
+
+            modelBuilder.Entity<Category>()
+                .HasMany(c => c.Topics)
+                .WithOne(t => t.Category)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Topic>()
+                .HasMany(t => t.Posts)
+                .WithOne(p => p.Topic)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

@@ -66,13 +66,8 @@ namespace TraineeshipForum.Controllers
 
         // GET: Categories/Edit/5
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             var category = await _context.Categories.FindAsync(id);
             if (category == null)
             {
@@ -86,13 +81,10 @@ namespace TraineeshipForum.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditCategory(int? id)
+        public async Task<IActionResult> EditCategory(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
             var categoryToUpdate = _context.Categories.Find(id);
+
             if (await TryUpdateModelAsync(categoryToUpdate,
                 "",
                 c => c.Title, c => c.Description))
@@ -113,17 +105,15 @@ namespace TraineeshipForum.Controllers
 
         // GET: Categories/Delete/5
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Delete(int? id, bool? saveChangesError = false)
+        public async Task<IActionResult> Delete(int id, bool? saveChangesError = false)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
             if (saveChangesError.GetValueOrDefault())
             {
                 ViewBag.ErrorMessage = "Delete failed";
             }
+
             Category category = await _context.Categories.FindAsync(id);
+
             if (category == null)
             {
                 return NotFound();
@@ -149,6 +139,7 @@ namespace TraineeshipForum.Controllers
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 return RedirectToAction("Delete", new { id, saveChangesError = true });
             }
+
             return RedirectToAction("Index", "Home");
         }
     }

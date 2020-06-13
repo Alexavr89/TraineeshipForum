@@ -59,10 +59,10 @@ namespace TraineeshipForum.Controllers
         public async Task<IActionResult> EditRole(string id)
         {
             var role = await _roleManager.FindByIdAsync(id);
+
             if (role == null)
             {
-                ViewBag.ErrorMessage = @"Role with Id = {id} cannot be found";
-                return View(""); // add name of the Error Page (create error page)
+                return NotFound();
             }
 
             var model = new EditRole
@@ -85,10 +85,10 @@ namespace TraineeshipForum.Controllers
         public async Task<IActionResult> EditRole(EditRole model)
         {
             var role = await _roleManager.FindByIdAsync(model.Id);
+
             if (role == null)
             {
-                ViewBag.ErrorMessage = @"Role with Id = {model.Id} cannot be found";
-                return View(""); // add name of the Error Page (create error page)
+                return NotFound();
             }
             else
             {
@@ -116,8 +116,7 @@ namespace TraineeshipForum.Controllers
 
             if (role == null)
             {
-                ViewBag.ErrorMessage = @"Role with Id = {roleId} cannot be found";
-                return View(""); // add name of the Error Page (create error page)
+                return NotFound();
             }
 
             var model = new List<UserRole>();
@@ -149,14 +148,14 @@ namespace TraineeshipForum.Controllers
             var role = await _roleManager.FindByIdAsync(roleId);
             if (role == null)
             {
-                ViewBag.ErrorMessage = $"Role with Id = {roleId} cannot be found";
-                return View(""); // add name of the Error Page (create error page)
+                return NotFound();
             }
 
             for (int i = 0; i < model.Count; i++)
             {
                 var user = await _userManager.FindByIdAsync(model[i].UserId);
-                IdentityResult result = null;
+                IdentityResult result;
+
                 if (model[i].IsSelected && !(await _userManager.IsInRoleAsync(user, role.Name)))
                 {
                     result = await _userManager.AddToRoleAsync(user, role.Name);
@@ -187,15 +186,17 @@ namespace TraineeshipForum.Controllers
             {
                 return NotFound();
             }
+
             if (saveChangesError.GetValueOrDefault())
             {
                 ViewBag.ErrorMessage = "Delete failed";
             }
+
             var role = await _roleManager.FindByIdAsync(id);
+
             if (role == null)
             {
-                ViewBag.ErrorMessage = $"Role with Id = {id} cannot be found";
-                return View("");// add name of the Error Page (create error page)
+                return NotFound();
             }
             return View(role);
         }
@@ -204,10 +205,10 @@ namespace TraineeshipForum.Controllers
         public async Task<IActionResult> DeleteRole(string id)
         {
             var role = await _roleManager.FindByIdAsync(id);
+
             if (role == null)
             {
-                ViewBag.ErrorMessage = $"Role with Id = {id} cannot be found";
-                return View("");// add name of the Error Page (create error page)
+                return NotFound();
             }
             else
             {

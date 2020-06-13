@@ -9,7 +9,7 @@
     <h1 class="display-4">Welcome</h1>
     @if (User.IsInRole("Admin"))
     {
-        <a asp-controller="Categories" asp-action="Create">Add Category</a>
+        <a class="btn btn-info" asp-controller="Categories" asp-action="Create">Add Category</a>
     }
 </div>
 
@@ -30,8 +30,12 @@
                     </a>
                     @if (User.IsInRole("Admin"))
                     {
-                        <a asp-controller="Categories" asp-action="Edit" asp-route-id="@category.Id">Edit</a>
-                        <a asp-controller="Categories" asp-action="Delete" asp-route-id="@category.Id">Delete</a>
+                     <a class="edit-category" asp-controller="Categories" asp-action="Edit" asp-route-id="@category.Id">
+                         <img class="edit" src="~/lib/images/Edit.jpg" alt="Edit" title="Edit Category">
+                     </a>
+                      <a asp-controller="Categories" asp-action="Delete" asp-route-id="@category.Id">
+                         <img class="delete" src="~/lib/images/Delete.jpg" alt="Delete" title="Delete Category">
+                     </a>
                     }
                     </div>
             }
@@ -50,16 +54,16 @@
                             <a asp-controller="Posts" asp-action="PostsByTopic" asp-route-id="@topic.TopicId" class="home-topic-title">@Html.DisplayFor(modelTopic => topic.TopicTitle)</a>
                         </div>
                         <div class="number-of-posts">
-                            <a class="posts-map">@Html.DisplayFor(modelTopic => topic.PostCount)</a> @*Replace anchor in this line*@
+                            <span class="posts-map">@Html.DisplayFor(modelTopic => topic.PostCount)</span>
                         </div>
                     </div>
                     <div class="category-and-age">
                         <a asp-controller="Topics" asp-action="TopicsByCategory" asp-route-id="@topic.CategoryId">
                            @Html.DisplayFor(modelTopic => topic.CategoryTitle)
                         </a>
-                        <a class="age">
+                        <span class="age">
                             @Html.DisplayFor(modelTopic => topic.DateCreated)
-                        </a>
+                        </span>
                     </div>
                 </div>
             }

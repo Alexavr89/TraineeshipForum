@@ -259,7 +259,7 @@ namespace TraineeshipForum.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("TopicId")
+                    b.Property<int>("TopicId")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
@@ -281,7 +281,7 @@ namespace TraineeshipForum.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CategoryId")
+                    b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Created")
@@ -358,7 +358,9 @@ namespace TraineeshipForum.Migrations
                 {
                     b.HasOne("TraineeshipForum.Models.Entities.Topic", "Topic")
                         .WithMany("Posts")
-                        .HasForeignKey("TopicId");
+                        .HasForeignKey("TopicId")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired();
 
                     b.HasOne("TraineeshipForum.Models.Entities.ApplicationUser", "User")
                         .WithMany()
@@ -369,7 +371,9 @@ namespace TraineeshipForum.Migrations
                 {
                     b.HasOne("TraineeshipForum.Models.Entities.Category", "Category")
                         .WithMany("Topics")
-                        .HasForeignKey("CategoryId");
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired();
 
                     b.HasOne("TraineeshipForum.Models.Entities.ApplicationUser", "User")
                         .WithMany()

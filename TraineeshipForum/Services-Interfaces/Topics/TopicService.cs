@@ -36,6 +36,7 @@ namespace TraineeshipForum.Services_Interfaces.Topics
                 .Include(t => t.Posts)
                     .ThenInclude(p => p.Topic)
                 .Include(t => t.Category)
+                .Include(t => t.User)
                 .FirstOrDefault();
 
             if (topic.Posts == null)

@@ -147,6 +147,7 @@ body {
 
 .age {
     margin-left: auto;
+    padding-left: 10px;
 }
 
 .more-topics {
@@ -249,7 +250,7 @@ body {
     margin-right: 10px;
 }
 
-.edit-post {
+.edit-post, .edit-topic, .edit-category {
     text-decoration: none !important;
 }
 
@@ -285,10 +286,6 @@ body {
 
     .actions {
     margin-left:auto;
-    }
-
-    .edit-topic {
-    text-decoration: none !important;
     }
 
 /* Dropdown menu in categories */

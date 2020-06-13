@@ -41,11 +41,11 @@ namespace TraineeshipForum.Controllers
 
         public CategoryPage CreateCategoryPage()
         {
-            var topic = _topicService.GetAllTopics().Select(topic => new TopicListing //not sure about select
+            var topic = _topicService.GetAllTopics().Select(topic => new TopicListing 
             {
                 CategoryId = topic.Category.Id,
                 TopicId = topic.Id,
-                CategoryTitle = topic.Title,
+                CategoryTitle = topic.Category.Title,
                 AuthorName = topic.User.UserName,
                 TopicTitle = topic.Title,
                 PostCount = topic.Posts.Count(),
@@ -118,7 +118,7 @@ namespace TraineeshipForum.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Title,Created,UserId")] NewTopic topic, int id) //08.06 changed from Topic to NewTopic 
+        public IActionResult Create([Bind("Title,Created,UserId")] NewTopic topic, int id) 
         {
             try
             {
@@ -126,9 +126,10 @@ namespace TraineeshipForum.Controllers
                 {
                     if (_context.Topics.Any(t => t.Title == topic.Title))
                     {
-                        ModelState.AddModelError("Title", "The title is not unique");
+                        ModelState.AddModelError("Title", "Topic with this title already exists");
                         return View(topic);
                     }
+
                     var userId = _userManager.GetUserId(User);
                     var user = _userManager.FindByIdAsync(userId).Result;
                     var category = _categoryService.GetById(id);
@@ -140,7 +141,7 @@ namespace TraineeshipForum.Controllers
                     _context.Add(topic);
                     _context.SaveChanges();
 
-                    return RedirectToAction("PostsByTopic", "Posts", new { id = topic.Id});
+                    return RedirectToAction("PostsByTopic", "Posts", new { id = topic.Id });
                 }
             }
             catch (DataException /* dex */)
@@ -161,10 +162,12 @@ namespace TraineeshipForum.Controllers
                 CategoryId = topic.Category.Id,
                 Title = topic.Title,
             };
+
             if (topic.User.UserName != User.Identity.Name)
             {
                 return NotFound();
             }
+
             if (topic == null)
             {
                 return NotFound();
@@ -196,6 +199,7 @@ namespace TraineeshipForum.Controllers
                     ModelState.AddModelError("", "Unable to save changes.");
                 }
             }
+
             return View(topicToUpdate);
         }
 
@@ -207,16 +211,19 @@ namespace TraineeshipForum.Controllers
             {
                 ViewBag.ErrorMessage = "Delete failed";
             }
+
             var topic = _topicService.GetById(id);
             var model = new DeleteTopic
             {
                 CategoryId = topic.Category.Id,
                 TopicTitle = topic.Title
             };
+
             if (topic.User.UserName != User.Identity.Name)
             {
                 return NotFound();
             }
+
             if (topic == null)
             {
                 return NotFound();
@@ -231,6 +238,7 @@ namespace TraineeshipForum.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var topicToDelete = _topicService.GetById(id);
+
             try
             {
                 _context.Entry(topicToDelete).State = EntityState.Deleted;
@@ -241,6 +249,7 @@ namespace TraineeshipForum.Controllers
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 return RedirectToAction("Delete", new { id, saveChangesError = true });
             }
+
             return RedirectToAction("TopicsByCategory", "Topics", new { id = topicToDelete.Category.Id });
         }
     }

@@ -38,7 +38,6 @@ namespace TraineeshipForum.Controllers
         public IActionResult PostsByTopic(int id)
         {
             var model = CreatePostsByTopic(id);
-
             return View(model);
         }
 
@@ -126,6 +125,7 @@ namespace TraineeshipForum.Controllers
                 TopicId = post.Topic.Id,
                 Content = post.Content
             };
+
             if (post.User.UserName != User.Identity.Name)
             {
                 return NotFound();
@@ -161,6 +161,7 @@ namespace TraineeshipForum.Controllers
                     ModelState.AddModelError("", "Unable to save changes.");
                 }
             }
+
             return View(postToUpdate);
         }
 
@@ -172,16 +173,20 @@ namespace TraineeshipForum.Controllers
             {
                 ViewBag.ErrorMessage = "Delete failed";
             }
+
             var post = _postService.GetById(id);
             var model = new DeletePost
             {
                 TopicId = post.Topic.Id,
-                PostContent = post.Content
+                PostContent = post.Content,
+                PostId = post.Id
             };
+
             if (post.User.UserName != User.Identity.Name)
             {
                 return NotFound();
             }
+
             if (post == null)
             {
                 return NotFound();
@@ -196,6 +201,7 @@ namespace TraineeshipForum.Controllers
         public async Task<IActionResult> Delete(int id)
         {
             var postToDelete = _postService.GetById(id);
+
             try
             {
                 _context.Entry(postToDelete).State = EntityState.Deleted;
@@ -206,6 +212,7 @@ namespace TraineeshipForum.Controllers
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 return RedirectToAction("Delete", new { id, saveChangesError = true });
             }
+
             return RedirectToAction("PostsByTopic", "Posts", new { id = postToDelete.Topic.Id });
         }
     }

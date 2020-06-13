@@ -15,7 +15,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Content" class="control-label"></label>
-                <textarea id="summernote" name="editordata" asp-for="Content" class="form-control"></textarea>
+                <textarea id="Content" asp-for="Content" class="form-control"></textarea>
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -30,8 +30,11 @@
     <a asp-action="PostsByTopic" asp-controller="Posts" asp-route-id="@Model.TopicId">Back to List</a>
 </div>
 
-<script>
-    $(document).ready(function () {
-        $('#summernote').summernote();
-    });
-</script>
+@section Scripts
+{
+    <script>
+        CKEDITOR.replace('Content');
+        CKEDITOR.config.width = 600;
+        CKEDITOR.config.language = 'en';
+    </script>
+}
