@@ -118,18 +118,12 @@ namespace TraineeshipForum.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Title,Created,UserId")] NewTopic topic, int id) 
+        public async Task <IActionResult> Create([Bind("Title,Created,UserId")] NewTopic topic, int id) 
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    if (_context.Topics.Any(t => t.Title == topic.Title))
-                    {
-                        ModelState.AddModelError("Title", "Topic with this title already exists");
-                        return View(topic);
-                    }
-
                     var userId = _userManager.GetUserId(User);
                     var user = _userManager.FindByIdAsync(userId).Result;
                     var category = _categoryService.GetById(id);
@@ -137,9 +131,15 @@ namespace TraineeshipForum.Controllers
                     topic.Category = category;
                     topic.User = user;
                     topic.Created = DateTime.Now;
+                    topic.CategoryId = id;
 
+                    if (_context.Topics.Any(t => t.Title == topic.Title))
+                    {
+                        ModelState.AddModelError("Title", "Topic with this title already exists");
+                        return View(topic);
+                    }
                     _context.Add(topic);
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
 
                     return RedirectToAction("PostsByTopic", "Posts", new { id = topic.Id });
                 }
@@ -181,13 +181,18 @@ namespace TraineeshipForum.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditTopicAsync(int id)
+        public async Task<IActionResult> EditTopicAsync(int id, NewTopic topic)
         {
             var topicToUpdate = _topicService.GetById(id);
             if (await TryUpdateModelAsync(topicToUpdate,
                 "",
                 t => t.Title))
             {
+                if (_context.Topics.Any(c => c.Title == topicToUpdate.Title))
+                {
+                    ModelState.AddModelError("Title", "Topic with this title already exists");
+                    return View(topic);
+                }
                 try
                 {
                     _context.SaveChanges();

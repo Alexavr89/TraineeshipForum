@@ -86,7 +86,7 @@ namespace TraineeshipForum.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Content,Created,UserId")] NewPost post, int id)
+        public async Task <IActionResult> Create([Bind("Content,Created,UserId")] NewPost post, int id)
         {
             try
             {
@@ -101,7 +101,7 @@ namespace TraineeshipForum.Controllers
                     post.Created = DateTime.Now;
 
                     _context.Add(post);
-                    _context.SaveChanges();
+                   await _context.SaveChangesAsync();
 
 
                     return RedirectToAction("PostsByTopic", "Posts", new { id = post.Topic.Id });

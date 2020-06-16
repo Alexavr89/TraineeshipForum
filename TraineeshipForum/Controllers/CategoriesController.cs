@@ -37,7 +37,7 @@ namespace TraineeshipForum.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Title, Description, Created")] Category category)
+        public async Task <IActionResult> Create([Bind("Title, Description, Created")] Category category)
         {
             try
             {
@@ -45,13 +45,13 @@ namespace TraineeshipForum.Controllers
                 {
                     if (_context.Categories.Any(c => c.Title == category.Title))
                     {
-                        ModelState.AddModelError("Title", "The title is not unique");
+                        ModelState.AddModelError("Title", "Category with this title already exists");
                         return View(category);
                     }
                     category.Created = DateTime.Now;
 
                     _context.Add(category);
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -66,9 +66,9 @@ namespace TraineeshipForum.Controllers
 
         // GET: Categories/Edit/5
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Edit(int id)
+        public IActionResult Edit(int id)
         {
-            var category = await _context.Categories.FindAsync(id);
+            var category = _context.Categories.Find(id);
             if (category == null)
             {
                 return NotFound();
@@ -89,6 +89,11 @@ namespace TraineeshipForum.Controllers
                 "",
                 c => c.Title, c => c.Description))
             {
+                if (_context.Categories.Any(c => c.Title == categoryToUpdate.Title))
+                {
+                    ModelState.AddModelError("Title", "Category with this title already exists");
+                    return View(categoryToUpdate);
+                }
                 try
                 {
                     _context.SaveChanges();
@@ -105,14 +110,14 @@ namespace TraineeshipForum.Controllers
 
         // GET: Categories/Delete/5
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Delete(int id, bool? saveChangesError = false)
+        public IActionResult Delete(int id, bool? saveChangesError = false)
         {
             if (saveChangesError.GetValueOrDefault())
             {
                 ViewBag.ErrorMessage = "Delete failed";
             }
 
-            Category category = await _context.Categories.FindAsync(id);
+            Category category = _context.Categories.Find(id);
 
             if (category == null)
             {
