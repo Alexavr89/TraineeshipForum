@@ -9,9 +9,9 @@ Open IIS <br>
 Right click on "Sites" -> "Add Website..." <br>
 Select "Site name" and pick physical path equal to "Folder Location", dont forget to use free port <br>
 Go to Application Pools <br>
-Right click on Application Pool name, which is the same as your "<Site Name>" and select Advanced Settings <br>
+Right click on Application Pool name, which is the same as your "-Site Name-" and select Advanced Settings <br>
 Make Identity equal "Local System" in Process Model <br>
-Right Click on "<Site Name>", select "Manage Application" and click "Browse" <br>
+Right Click on "-Site Name-", select "Manage Application" and click "Browse" <br>
 
 
 
