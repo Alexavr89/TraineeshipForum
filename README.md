@@ -6,10 +6,12 @@ Select Folder and click Next <br>
 Select "Folder Location" and Click Finish <br>
 Click Publish <br>
 Open IIS <br>
-Select Site -> Right click on Default Website -> Add Virtual Directory <br>
-"Physical Path == Folder Location" and Alias: "TraineeshipForum" <br>
-Right Click on "TraineeshipForum" and "Convert to Application" then "Ok" <br>
-Right Click on "TraineeshipForum", select "Manage Application" and click "Browse" <br>
+Right click on "Sites" -> "Add Website..." <br>
+Select "Site name" and pick physical path equal to "Folder Location", dont forget to use free port <br>
+Go to Application Pools <br>
+Right click on Application Pool name, which is the same as your "<Site Name>" and select Advanced Settings <br>
+Make Identity equal "Local System" in Process Model <br>
+Right Click on "<Site Name>", select "Manage Application" and click "Browse" <br>
 
 
 
