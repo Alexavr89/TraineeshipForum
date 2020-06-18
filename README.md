@@ -4,7 +4,7 @@ To Run in Production Mode:
 In your Solution Explorer select project and right-click to select Publish <br>
 Select Folder and click Next <br>
 Select "Folder Location" and Click Finish <br>
-Click Publish <br>
+Click Publish <br><br>
 Open IIS <br>
 Right click on "Sites" -> "Add Website..." <br>
 Select "Site name" and pick physical path equal to "Folder Location", dont forget to use free port <br>
