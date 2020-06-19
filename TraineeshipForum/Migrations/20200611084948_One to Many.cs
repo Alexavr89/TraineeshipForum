@@ -17,7 +17,7 @@ namespace TraineeshipForum.Migrations
             migrationBuilder.AlterColumn<int>(
                 name: "CategoryId",
                 table: "Topics",
-                nullable: true,  
+                nullable: true,
                 oldClrType: typeof(int),
                 oldType: "int",
                 oldNullable: true);
@@ -25,7 +25,7 @@ namespace TraineeshipForum.Migrations
             migrationBuilder.AlterColumn<int>(
                 name: "TopicId",
                 table: "Posts",
-                nullable: true, 
+                nullable: true,
                 oldClrType: typeof(int),
                 oldType: "int",
                 oldNullable: true);

@@ -41,7 +41,7 @@ namespace TraineeshipForum.Controllers
 
         public CategoryPage CreateCategoryPage()
         {
-            var topic = _topicService.GetAllTopics().Select(topic => new TopicListing 
+            var topic = _topicService.GetAllTopics().Select(topic => new TopicListing
             {
                 CategoryId = topic.Category.Id,
                 TopicId = topic.Id,
@@ -118,7 +118,7 @@ namespace TraineeshipForum.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task <IActionResult> Create([Bind("Title,Created,UserId")] NewTopic topic, int id) 
+        public async Task<IActionResult> Create([Bind("Title,Created,UserId")] NewTopic topic, int id)
         {
             try
             {

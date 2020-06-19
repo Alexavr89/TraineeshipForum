@@ -5,6 +5,5 @@ namespace TraineeshipForum.Models.Entities
     public class ApplicationUser : IdentityUser
     {
         public string ProfileImageUrl { get; set; }
-
     }
 }

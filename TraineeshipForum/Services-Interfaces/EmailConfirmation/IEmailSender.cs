@@ -14,11 +14,11 @@ namespace WebPWrecover.Services
             Options = optionsAccessor.Value;
         }
 
-        public AuthMessageSenderOptions Options { get; } //set only via Secret Manager
+        public AuthMessageSenderOptions Options;
 
         public Task SendEmailAsync(string email, string subject, string message)
         {
-            return Execute(Options.SendGridKey, subject, message, email);
+               return Execute("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", subject, message, email);
         }
 
         public Task Execute(string apiKey, string subject, string message, string email)
@@ -26,7 +26,7 @@ namespace WebPWrecover.Services
             var client = new SendGridClient(apiKey);
             var msg = new SendGridMessage()
             {
-                From = new EmailAddress("pain@mksat.net", Options.SendGridUser),
+                From = new EmailAddress("pain@mksat.net", "TraineeshipForum"),
                 Subject = subject,
                 PlainTextContent = message,
                 HtmlContent = message
