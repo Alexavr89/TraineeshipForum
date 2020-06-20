@@ -1,11 +1,12 @@
 # TraineeshipForum
 To make Email confirmation work you will need <a href="https://sendgrid.com/">SendGrid account</a> with verified email <br>
 In profile menu "Settings" -> API Keys -> Create API Key <br>
-Type in API key name, that will be used in "Manage User Secrets"( right click on Solution name) json file as SendGridUser field <br>
+Type in API key name<br>
 In "Restriction Access" choose Mail Send and Click Create & View <br>
-Copy Api Key and paste it in secrets.json file in SendGridKey field <br>
-In the end you will need to add, verified by SendGrid, email address in line 29 <br>
-To verify go to Marketing -> Senders -> Create New Sender <br><br>
+Copy API Key and paste it in secrets.json file in SendGridKey field <br>
+Complete the same with API key name by copiing it SendGridUser field<br>
+In the end you will need to add, verified by SendGrid, email address in line 29 of IEmailSender.cs in Services-Interfaces<br>
+To verify email go to Marketing -> Senders -> Create New Sender <br><br>
 To Run in Production Mode(locally):
 
 In your Solution Explorer select project and right-click to select Publish <br>
