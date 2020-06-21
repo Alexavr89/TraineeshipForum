@@ -195,7 +195,7 @@ namespace TraineeshipForum.Controllers
                 }
                 try
                 {
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
                     return RedirectToAction("TopicsByCategory", "Topics", new { id = topicToUpdate.Category.Id });
                 }
                 catch (DataException /* dex */)

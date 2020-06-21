@@ -96,7 +96,7 @@ namespace TraineeshipForum.Controllers
                 }
                 try
                 {
-                    _context.SaveChanges();
+                   await _context.SaveChangesAsync();
                     return RedirectToAction("Index", "Home");
                 }
                 catch (DataException /* dex */)

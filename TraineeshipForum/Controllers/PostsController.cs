@@ -152,7 +152,7 @@ namespace TraineeshipForum.Controllers
             {
                 try
                 {
-                    _context.SaveChanges();
+                    await _context.SaveChangesAsync();
                     return RedirectToAction("PostsByTopic", "Posts", new { id = postToUpdate.Topic.Id });
                 }
                 catch (DataException /* dex */)
