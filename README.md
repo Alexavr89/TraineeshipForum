@@ -22,6 +22,12 @@ Right click on Application Pool name, which is the same as your "-Site Name-" an
 Make Identity equal "Local System" in Process Model <br>
 Right Click on "-Site Name-", select "Manage Application" and click "Browse" <br><br>
 
+After successful registration you need to create and assign role "Admin" to a particular user<br>
+It will allows you to create categories <br> 
+Go to "Admin" Section on Top and Click "Create Role" with name "Admin" <br>
+Click Edit and Add/Remove Users -> Assign registrated user to this role -> Click Update<br>
+Now you can add Forum categories on Home Page <br>
+
 
 
 
