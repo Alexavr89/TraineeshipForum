@@ -9,7 +9,7 @@ using TraineeshipForum.Models.Entities;
 
 namespace TraineeshipForum.Controllers
 {
-    ///[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public class AdministrationController : Controller
     {
         private static RoleManager<IdentityRole> _roleManager;

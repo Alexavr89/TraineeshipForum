@@ -1,73 +1,76 @@
-﻿@model TraineeshipForum.Models.Pages.TopicPage
+﻿@using Microsoft.AspNetCore.Identity
+@model TraineeshipForum.Models.Pages.TopicPage
+@inject UserManager<TraineeshipForum.Models.Entities.ApplicationUser> UserManager
+@inject SignInManager<TraineeshipForum.Models.Entities.ApplicationUser> SignInManager
 
 @{
     ViewData["Title"] = "Detailed topic page";
 }
 
 
-        <div class="topic-title">
-            <div class="title-wrapper">
-                <h1 class="title">@Html.DisplayFor(modelTopic => Model.TopicTitle)</h1>
-                <div class="topic-category">
-                    <a class="category-link" asp-controller="Topics" asp-action="TopicsByCategory" asp-route-id="@Model.CategoryId">
-                        @Html.DisplayFor(modelTopic => Model.CategoryTitle)
+<div class="topic-title">
+    <div class="title-wrapper">
+        <h1 class="title">@Html.DisplayFor(modelTopic => Model.TopicTitle)</h1>
+        <div class="topic-category">
+            <a class="category-link" asp-controller="Topics" asp-action="TopicsByCategory" asp-route-id="@Model.CategoryId">
+                @Html.DisplayFor(modelTopic => Model.CategoryTitle)
+            </a>
+        </div>
+    </div>
+</div>
+@foreach (var post in Model.Posts)
+{
+    <div class="topic-post">
+        <article>
+            <div class="topic-row">
+                <div class="post-avatar">
+                    <a class="avatar-link">
+                        <img width="45" height="45" src="@post.AuthorImageURL" title="@post.AuthorName" class="avatar" />
                     </a>
                 </div>
-            </div>
-        </div>
-        @foreach (var post in Model.Posts)
-        {
-            <div class="topic-post">
-                <article>
-                    <div class="topic-row">
-                        <div class="post-avatar">
-                            <a class="avatar-link">
-                                <img width="45" height="45" src="~/lib/images/AvatarDefault.jpg" title="@post.AuthorName" class="avatar"/>
-                            </a>
+                <div class="post-body">
+                    <div class="post-author-and-time">
+                        <div class="post-author">
+                            <a asp-controller="Profile" asp-action="Detail" asp-route-id="@UserManager.GetUserId(User)">@Html.DisplayFor(modelPost => post.AuthorName)</a>
                         </div>
-                        <div class="post-body">
-                            <div class="post-author-and-time">
-                                <div class="post-author">
-                                    @Html.DisplayFor(modelPost => post.AuthorName)
-                                </div>
-                                <div>
-                                    @Html.DisplayFor(modelPost => post.DatePosted)
-                                </div>
-                            </div>
-                            <div>
-                                <div class="post-content">
-                                    @Html.Raw(System.Net.WebUtility.HtmlDecode(post.Content))
-                                </div>
-                                <section class="edit-section">
-                                    <nav class="edit-navigation">
-                                        <div class="actions">
-                                            @if (User.Identity.Name == post.AuthorName)
-                                            {
-                                                <a class="edit-post" asp-controller="Posts" asp-action="Edit" asp-route-id="@post.PostId">
-                                                    <img class="edit" src="~/lib/images/Edit.jpg" alt="Edit" title="Edit Post">
-                                                </a>
-                                                <a asp-controller="Posts" asp-action="Delete" asp-route-id="@post.PostId">
-                                                    <img class="delete" src="~/lib/images/Delete.jpg" alt="Delete" title="Delete Post">
-                                                </a>
-                                            }
-                                        </div>
-                                    </nav>
-                                </section>
-                            </div>
-
-                            <section class="tool-space"></section>
+                        <div>
+                            @Html.DisplayFor(modelPost => post.DatePosted)
                         </div>
                     </div>
-                </article>
+                    <div>
+                        <div class="post-content">
+                            @Html.Raw(System.Net.WebUtility.HtmlDecode(post.Content))
+                        </div>
+                        <section class="edit-section">
+                            <nav class="edit-navigation">
+                                <div class="actions">
+                                    @if (User.Identity.Name == post.AuthorName)
+                                    {
+                                        <a class="edit-post" asp-controller="Posts" asp-action="Edit" asp-route-id="@post.PostId">
+                                            <img class="edit" src="~/lib/images/Edit.jpg" alt="Edit" title="Edit Post">
+                                        </a>
+                                        <a asp-controller="Posts" asp-action="Delete" asp-route-id="@post.PostId">
+                                            <img class="delete" src="~/lib/images/Delete.jpg" alt="Delete" title="Delete Post">
+                                        </a>
+                                    }
+                                </div>
+                            </nav>
+                        </section>
+                    </div>
+
+                    <section class="tool-space"></section>
+                </div>
             </div>
-        }
-        <div class="post-reply">
-            <div class="post-tools"></div>
-            <div class="post-reply-area">
-                <a class="btn btn-info post-reply-button" asp-controller="Posts" asp-action="Create" asp-route-id="@Model.TopicId">
-                    <span>Reply</span>
-                </a>
-            </div>
-        </div>
+        </article>
+    </div>
+}
+<div class="post-reply">
+    <div class="post-tools"></div>
+    <div class="post-reply-area">
+        <a class="btn btn-info post-reply-button" asp-controller="Posts" asp-action="Create" asp-route-id="@Model.TopicId">
+            <span>Reply</span>
+        </a>
+    </div>
+</div>
 
 

@@ -12,6 +12,8 @@ using TraineeshipForum.Services_Interfaces.Categories;
 using TraineeshipForum.Services_Interfaces.EmailConfirmation;
 using TraineeshipForum.Services_Interfaces.Posts;
 using TraineeshipForum.Services_Interfaces.Topics;
+using TraineeshipForum.Services_Interfaces.Upload;
+using TraineeshipForum.Services_Interfaces.User;
 using WebPWrecover.Services;
 
 namespace TraineeshipForum
@@ -39,6 +41,9 @@ namespace TraineeshipForum
             services.AddScoped<ITopic, TopicService>();
             services.AddScoped<ICategory, CategoryService>();
             services.AddScoped<IPost, PostService>();
+            services.AddScoped<IApplicationUser, ApplicationUserService>();
+            services.AddScoped<IUpload, UploadService>();
+            services.AddSingleton(Configuration);
 
             services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(Configuration);

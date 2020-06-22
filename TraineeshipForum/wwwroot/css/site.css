@@ -343,3 +343,17 @@ body {
 .show {
     display: block;
 }
+
+#userProfileImage {
+    display: inline-block;
+    width: 200px;
+    height: 200px;
+    background-color: #ddd;
+}
+
+/* User profile */
+
+.userDetails {
+    display: flex;
+    flex-direction: column;
+}

@@ -51,7 +51,7 @@ namespace TraineeshipForum.Controllers
                 Content = post.Content,
                 DatePosted = post.Created.ToString(),
                 PostId = post.Id,
-                //     AuthorImageURL = post                 // I will finish with avatars later
+                AuthorImageURL = post.User.ProfileImageUrl             
             });
 
             return new TopicPage()
