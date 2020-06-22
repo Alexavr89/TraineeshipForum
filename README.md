@@ -27,7 +27,7 @@ It will allows you to create categories <br>
 Go to "Admin" Section on Top and Click "Create Role" with name "Admin" <br>
 Click Edit and Add/Remove Users -> Assign registrated user to this role -> Click Update<br>
 Now you can add Forum categories on Home Page <br>
-
+To add restrictions to "Roles" area remove "//" in the Administration Controller
 
 
 
