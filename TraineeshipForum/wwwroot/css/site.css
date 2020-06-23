@@ -357,3 +357,9 @@ body {
     display: flex;
     flex-direction: column;
 }
+
+/* User profile Index */
+.userProfilePic {
+    height: 140px;
+    width: 140px;
+}
