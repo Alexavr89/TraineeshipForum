@@ -21,7 +21,6 @@ namespace TraineeshipForum.Areas.Identity.Pages.Account.Manage
         }
 
         public string Username { get; set; }
-
         [TempData]
         public string StatusMessage { get; set; }
 

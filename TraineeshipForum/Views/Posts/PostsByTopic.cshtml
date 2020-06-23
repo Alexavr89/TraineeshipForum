@@ -31,7 +31,7 @@
                 <div class="post-body">
                     <div class="post-author-and-time">
                         <div class="post-author">
-                            <a asp-controller="Profile" asp-action="Detail" asp-route-id="@UserManager.GetUserId(User)">@Html.DisplayFor(modelPost => post.AuthorName)</a>
+                            <a asp-controller="Profile" asp-action="Detail" asp-route-id="@post.AuthorId">@Html.DisplayFor(modelPost => post.AuthorName)</a>
                         </div>
                         <div>
                             @Html.DisplayFor(modelPost => post.DatePosted)
