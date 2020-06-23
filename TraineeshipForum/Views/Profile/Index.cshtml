@@ -12,13 +12,13 @@
                             Profile Img
                         </th>
                         <th>
-                            Status
-                        </th>
-                        <th>
                             Member Since
                         </th>
                         <th>
                             E-mail
+                        </th>
+                        <th>
+                            User name
                         </th>
                     </tr>
                 </thead>
@@ -28,16 +28,6 @@
                         <tr class="userRow">
                             <td>
                                 <div class="userProfilePic" style="background-image: url(@profile.ProfileImageUrl); background-size:100%"></div>
-                            </td>
-                            <td>
-                                @if (profile.IsActive)
-                                {
-                                    <span>Active</span>
-                                }
-                                else
-                                {
-                                    <span class="inactiveUser">Inactive</span>
-                                }
                             </td>
                             <td>
                                 @profile.DateJoined
