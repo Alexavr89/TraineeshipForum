@@ -1,16 +1,3 @@
 {
-  "dependencies": {
-    "secrets1": {
-      "type": "secrets",
-      "connectionId": "ASPNETCORE_HOSTINGSTARTUP__KEYVAULT__CONFIGURATIONVAULT"
-    },
-    "mssql1": {
-      "type": "mssql",
-      "connectionId": "DefaultConnection"
-    },
-    "mssql2": {
-      "type": "mssql",
-      "connectionId": "TraineeshipForumContext"
-    }
-  }
+  "dependencies": {}
 }
