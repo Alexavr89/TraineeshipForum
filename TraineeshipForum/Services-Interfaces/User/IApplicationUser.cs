@@ -10,6 +10,5 @@ namespace TraineeshipForum.Services_Interfaces.User
         ApplicationUser GetById(string id);
         Task SetProfileImage(string id, Uri uri);
         IEnumerable<ApplicationUser> GetAll();
-        Task Deactivate(ApplicationUser user);
     }
 }

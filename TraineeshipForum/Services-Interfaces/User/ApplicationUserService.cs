@@ -30,11 +30,5 @@ namespace TraineeshipForum.Services_Interfaces.User
         {
             return _context.ApplicationUsers;
         }
-        public async Task Deactivate(ApplicationUser user)
-        {
-            user.IsActive = false;
-            _context.Update(user);
-            await _context.SaveChangesAsync();
-        }
     }
 }

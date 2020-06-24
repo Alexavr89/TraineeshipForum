@@ -33,8 +33,6 @@ namespace TraineeshipForum.Controllers
         public IActionResult Detail(string id)
         {
             var user = _userService.GetById(id);
-            var userRoles = _userManager.GetRolesAsync(user).Result;
-
             var model = new Profile()
             {
                 UserId = user.Id,
@@ -42,8 +40,6 @@ namespace TraineeshipForum.Controllers
                 Email = user.Email,
                 ProfileImageUrl = user.ProfileImageUrl,
                 DateJoined = user.MemberSince,
-                IsAdmin = userRoles.Contains("Admin"),  // remove this
-                IsActive = user.IsActive  // remove this
             };
 
             return View(model);
@@ -75,7 +71,6 @@ namespace TraineeshipForum.Controllers
                     Email = u.Email,
                     ProfileImageUrl = u.ProfileImageUrl,
                     DateJoined = u.MemberSince,
-                    IsActive = u.IsActive, //remove this function
                 }); 
 
             var model = new ProfileListing
@@ -84,12 +79,6 @@ namespace TraineeshipForum.Controllers
             };
 
             return View(model);
-        }
-        public IActionResult Deactivate(string userId) //remove this method
-        {
-            var user = _userService.GetById(userId);
-            _userService.Deactivate(user);
-            return RedirectToAction("Index", "Profile");
         }
     }
 }

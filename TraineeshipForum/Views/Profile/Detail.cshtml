@@ -4,16 +4,6 @@
 @inject UserManager<TraineeshipForum.Models.Entities.ApplicationUser> UserManager
 
     <div class="container body-content">
-        <div class="row sectionHeader">
-            @if (User.IsInRole("Admin"))
-            {
-                <form method="post" asp-controller="Profile" asp-action="Deactivate" asp-route-id="@Model.UserId">
-                    <div>
-                        <button class="btn btn-danger" active="@Model.IsActive">Deactivate User</button>
-                    </div>
-                </form>
-            }
-        </div>
         @if (Context.User.Identity.IsAuthenticated)
         {
             <div class="row userProfile">
@@ -33,22 +23,7 @@
                 </div>
                 <div class="col-md-8 userDetails">
                     <span id="userName">@Model.Username</span>
-                    @if (@Model.IsAdmin)
-                    {
-                        <span class="isAdmin">Admin</span>
-                    }
                     <span id="userCreatedLabel">Member Since: @Model.DateJoined</span>
-                    <span id="userActiveLabel">
-                        Status:
-                        @if (!@Model.IsActive)
-                        {
-                            <span class="inactiveUser">Inactive</span>
-                        }
-                        else
-                        {
-                            <span>Active</span>
-                        }
-                    </span>
                 </div>
             </div>
         }
