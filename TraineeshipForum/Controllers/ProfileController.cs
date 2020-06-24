@@ -60,7 +60,7 @@ namespace TraineeshipForum.Controllers
             await blockBlob.UploadFromStreamAsync(file.OpenReadStream());
             await _userService.SetProfileImage(userId, blockBlob.Uri);
 
-            return RedirectToAction("Detail", "Profile", new { id = userId });
+            return Redirect("https://traineeshipforum.azurewebsites.net/Identity/Account/Manage");
         }
         public IActionResult Index()
         {

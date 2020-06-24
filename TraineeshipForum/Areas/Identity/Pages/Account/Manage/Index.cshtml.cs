@@ -15,6 +15,7 @@ namespace TraineeshipForum.Areas.Identity.Pages.Account.Manage
         public IndexModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager)
+
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -33,6 +34,7 @@ namespace TraineeshipForum.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
         }
+        public Profile Profile { get; set; }
 
         private async Task LoadAsync(ApplicationUser user)
         {
@@ -44,6 +46,11 @@ namespace TraineeshipForum.Areas.Identity.Pages.Account.Manage
             Input = new InputModel
             {
                 PhoneNumber = phoneNumber
+            };
+
+            Profile = new Profile
+            {
+                ProfileImageUrl = user.ProfileImageUrl
             };
         }
 
