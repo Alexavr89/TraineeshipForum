@@ -3,23 +3,12 @@
 
 @inject UserManager<TraineeshipForum.Models.Entities.ApplicationUser> UserManager
 
-    <div class="container body-content">
+    <div class="container body-content pt-3">
         @if (Context.User.Identity.IsAuthenticated)
         {
             <div class="row userProfile">
                 <div class="col-md-4">
                     <div id="userProfileImage" style="background-image: url(@Model.ProfileImageUrl); background-size:100%;"></div>
-                    @if (Context.User.Identity.Name == Model.Username)
-                    {
-                        <form method="post" enctype="multipart/form-data" asp-controller="Profile" asp-action="UploadProfileImage">
-                            <div id="upload">
-                                <label class="btn btn-info btn-block btn-file">
-                                    Browse <input type="file" name="file" style="display: none;">
-                                </label>
-                            </div>
-                            <button type="submit" id="btn-profile" class="btn btn-primary">Submit</button>
-                        </form>
-                    }
                 </div>
                 <div class="col-md-8 userDetails">
                     <span id="userName">@Model.Username</span>
