@@ -1,4 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using TraineeshipForum.Models.Entities;
 
 namespace TraineeshipForum.Models
 {
@@ -16,5 +20,7 @@ namespace TraineeshipForum.Models
         public string DateCreated { get; set; }
         [Display(Name = "Author")]
         public string AuthorName { get; set; }
+        public string LastPostCreated { get; set; }
+        public double TimeFromLastPost { get; set; }    //check this out
     }
 }

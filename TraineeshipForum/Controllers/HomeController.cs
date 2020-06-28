@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Diagnostics;
 using System.Linq;
 using TraineeshipForum.Data;
@@ -38,7 +39,9 @@ namespace TraineeshipForum.Controllers
                 CategoryTitle = topic.Category.Title,
                 TopicTitle = topic.Title,
                 PostCount = topic.Posts.Count(),
-                DateCreated = topic.Created.ToString()
+                DateCreated = topic.Created.ToString(),
+                LastPostCreated = topic.Posts.OrderByDescending(post => post.Created).FirstOrDefault().Created.ToString(),
+                TimeFromLastPost = Math.Round((DateTime.Now - topic.Posts.OrderByDescending(post => post.Created).FirstOrDefault().Created).TotalDays, 0, MidpointRounding.AwayFromZero)
             });
 
             return new HomePage()

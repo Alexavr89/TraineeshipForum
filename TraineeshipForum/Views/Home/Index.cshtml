@@ -61,8 +61,8 @@
                         <a asp-controller="Topics" asp-action="TopicsByCategory" asp-route-id="@topic.CategoryId">
                            @Html.DisplayFor(modelTopic => topic.CategoryTitle)
                         </a>
-                        <span class="age">
-                            @Html.DisplayFor(modelTopic => topic.DateCreated)
+                        <span class="age" title="First Post: @topic.DateCreated&#013;Posted: @topic.LastPostCreated">
+                                @Html.DisplayFor(modelTopic => topic.TimeFromLastPost)d
                         </span>
                     </div>
                 </div>
