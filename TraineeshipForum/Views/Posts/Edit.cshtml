@@ -35,5 +35,12 @@
         CKEDITOR.replace('Content');
         CKEDITOR.config.width = 600;
         CKEDITOR.config.language = 'en';
+        $("form").submit(function (e) {
+            var messageLength = CKEDITOR.instances['Content'].getData().replace(/<[^>]*>/gi, '').length;
+            if (!messageLength) {
+                alert('Please enter a message');
+                e.preventDefault();
+            }
+        });
     </script>
 }
