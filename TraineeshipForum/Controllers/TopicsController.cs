@@ -188,7 +188,7 @@ namespace TraineeshipForum.Controllers
                 "",
                 t => t.Title))
             {
-                if (_context.Topics.Any(c => c.Title == topicToUpdate.Title))
+                if (_context.Topics.Any(t => t.Title == topicToUpdate.Title))
                 {
                     ModelState.AddModelError("Title", "Topic with this title already exists");
                     return View(topic);
