@@ -1,11 +1,16 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Azure.Core.Extensions;
+using Azure.Storage.Blobs;
+using Azure.Storage.Queues;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Azure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 using TraineeshipForum.Data;
 using TraineeshipForum.Models.Entities;
 using TraineeshipForum.Services_Interfaces.Categories;
@@ -15,11 +20,6 @@ using TraineeshipForum.Services_Interfaces.Topics;
 using TraineeshipForum.Services_Interfaces.Upload;
 using TraineeshipForum.Services_Interfaces.User;
 using WebPWrecover.Services;
-using Microsoft.Extensions.Azure;
-using Azure.Storage.Queues;
-using Azure.Storage.Blobs;
-using Azure.Core.Extensions;
-using System;
 
 namespace TraineeshipForum
 {

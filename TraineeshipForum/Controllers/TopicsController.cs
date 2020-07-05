@@ -204,7 +204,6 @@ namespace TraineeshipForum.Controllers
                     ModelState.AddModelError("", "Unable to save changes.");
                 }
             }
-
             return View(topicToUpdate);
         }
 

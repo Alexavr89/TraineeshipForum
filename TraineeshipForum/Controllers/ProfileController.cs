@@ -71,7 +71,7 @@ namespace TraineeshipForum.Controllers
                     Email = u.Email,
                     ProfileImageUrl = u.ProfileImageUrl,
                     DateJoined = u.MemberSince,
-                }); 
+                });
 
             var model = new ProfileListing
             {

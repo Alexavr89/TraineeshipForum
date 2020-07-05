@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using TraineeshipForum.Models.Entities;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace TraineeshipForum.Models
 {
