@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Data;
 using System.Linq;
@@ -100,10 +101,10 @@ namespace TraineeshipForum.Controllers
                     post.Topic = topic;
                     post.User = user;
                     post.Created = DateTime.Now;
+                    post.TopicId = id;
 
                     _context.Add(post);
                     await _context.SaveChangesAsync();
-
 
                     return RedirectToAction("PostsByTopic", "Posts", new { id = post.Topic.Id });
                 }
@@ -144,7 +145,7 @@ namespace TraineeshipForum.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditPostAsync(int id)
+        public async Task<IActionResult> EditPostAsync(int id, NewPost post)
         {
             var postToUpdate = _postService.GetById(id);
             if (await TryUpdateModelAsync(postToUpdate,
@@ -162,7 +163,10 @@ namespace TraineeshipForum.Controllers
                     ModelState.AddModelError("", "Unable to save changes.");
                 }
             }
-
+            else
+            {
+                return View(post);
+            }
             return View(postToUpdate);
         }
 
