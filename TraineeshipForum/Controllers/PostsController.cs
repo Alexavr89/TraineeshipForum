@@ -163,11 +163,7 @@ namespace TraineeshipForum.Controllers
                     ModelState.AddModelError("", "Unable to save changes.");
                 }
             }
-            else
-            {
-                return View(post);
-            }
-            return View(postToUpdate);
+            return View(post);
         }
 
         // GET: Posts/Delete/5
