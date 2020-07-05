@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System;
 using System.Data;
 using System.Linq;
@@ -103,6 +102,12 @@ namespace TraineeshipForum.Controllers
                     post.Created = DateTime.Now;
                     post.TopicId = id;
 
+                    if (_context.Posts.Any(p => p.Content == post.Content))
+                    {
+                        ModelState.AddModelError("Content", "Post with this content already exist");
+                        return View(post);
+                    }
+
                     _context.Add(post);
                     await _context.SaveChangesAsync();
 
@@ -152,6 +157,11 @@ namespace TraineeshipForum.Controllers
                 "",
                 p => p.Content))
             {
+                if (_context.Posts.Any(p => p.Content == post.Content))
+                {
+                    ModelState.AddModelError("Content", "Post with this content already exist");
+                    return View(post);
+                }
                 try
                 {
                     await _context.SaveChangesAsync();
