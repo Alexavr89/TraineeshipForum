@@ -53,9 +53,18 @@
                         <div class="topics-link">
                             <a asp-controller="Posts" asp-action="PostsByTopic" asp-route-id="@topic.TopicId" class="home-topic-title">@Html.DisplayFor(modelTopic => topic.TopicTitle)</a>
                         </div>
+                        @if (topic.PostCount != 1)
+                        {
                         <div class="number-of-posts">
                             <span class="posts-map" title="This topic has @topic.PostCount posts">@Html.DisplayFor(modelTopic => topic.PostCount)</span>
                         </div>
+                        }
+                        else 
+                        {
+                         <div class="number-of-posts">
+                            <span class="posts-map" title="This topic has @topic.PostCount post">@Html.DisplayFor(modelTopic => topic.PostCount)</span>
+                         </div>
+                        }
                     </div>
                     <div class="category-and-age">
                         <a asp-controller="Topics" asp-action="TopicsByCategory" asp-route-id="@topic.CategoryId">

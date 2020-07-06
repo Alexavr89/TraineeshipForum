@@ -54,10 +54,17 @@
                     <a>@Html.DisplayFor(modelTopic => topic.AuthorName)</a>
                 </td>
                 <td>
-                    <a>@Html.DisplayFor(modelTopic => topic.PostCount)</a>
+                          @if (topic.PostCount != 1)
+                          {
+                            <span title="This topic has @topic.PostCount replies">@Html.DisplayFor(modelTopic => topic.PostCount)</span>
+                          }
+                          else 
+                          {
+                            <span title="This topic has @topic.PostCount reply">@Html.DisplayFor(modelTopic => topic.PostCount)</span>  
+                          }
                 </td>
                 <td>
-                    <a>@Html.DisplayFor(modelTopic => topic.DateCreated)</a>
+                    <span>@Html.DisplayFor(modelTopic => topic.DateCreated)</span>
                 </td>
                 <td>
                     @if (User.Identity.Name == topic.AuthorName)
