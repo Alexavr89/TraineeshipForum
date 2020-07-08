@@ -141,13 +141,13 @@ namespace TraineeshipForum.Controllers
                     _context.Add(topic);
                     await _context.SaveChangesAsync();
 
-                    return RedirectToAction("PostsByTopic", "Posts", new { id = topic.Id });
+                    return RedirectToAction("Create", "Posts", new { id = topic.Id });
                 }
             }
             catch (DataException /* dex */)
             {
                 //Log the error (uncomment dex variable name and add a line here to write a log.
-                ModelState.AddModelError("", "Unable to save changes. Try again...");
+                ModelState.AddModelError("", "Unable to save changes.");
             }
             return View(topic);
         }
@@ -201,7 +201,7 @@ namespace TraineeshipForum.Controllers
                 catch (DataException /* dex */)
                 {
                     //Log the error (uncomment dex variable name and add a line here to write a log.
-                    ModelState.AddModelError("", "Unable to save changes.");
+                    ModelState.AddModelError("", "Unable to save changes. Try again...");
                 }
             }
             return View(topicToUpdate);
