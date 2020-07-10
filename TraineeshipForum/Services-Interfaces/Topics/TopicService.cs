@@ -23,7 +23,6 @@ namespace TraineeshipForum.Services_Interfaces.Topics
                 .Include(t => t.Posts)
                     .ThenInclude(p => p.User);
 
-
             return topics;
         }
 

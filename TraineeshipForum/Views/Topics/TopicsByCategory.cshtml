@@ -4,24 +4,24 @@
     ViewData["Title"] = "Detailed category page";
 }
 
-<div class="category-navigation">
-    <div class="dropdown">
-        <button onclick="myFunction()" class="dropbtn dropdown-toggle">
-            @Html.DisplayFor(modelCategory => Model.Category.Title)
-        </button>
-        <div id="myDropdown" class="dropdown-content">
-            <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
-            <a asp-controller="Home" asp-action="Index" class="dropdown-item">All Categories</a>
-            @foreach (var category in Model.Categories)
-            {
-                <a asp-controller="Topics" asp-action="TopicsByCategory" asp-route-id="@category.Id" class="dropdown-item">@Html.DisplayFor(modelCategory => category.Title)</a>
-            }
+    <div class="category-navigation">
+        <div class="dropdown">
+            <button onclick="myFunction()" class="dropbtn dropdown-toggle">
+                @Html.DisplayFor(modelCategory => Model.Category.Title)
+            </button>
+            <div id="myDropdown" class="dropdown-content">
+                <input type="text" placeholder="Search.." id="myInput" onkeyup="filterFunction()">
+                <a asp-controller="Home" asp-action="Index" class="dropdown-item">All Categories</a>
+                @foreach (var category in Model.Categories)
+                {
+                    <a asp-controller="Topics" asp-action="TopicsByCategory" asp-route-id="@category.Id" class="dropdown-item">@Html.DisplayFor(modelCategory => category.Title)</a>
+                }
+            </div>
+        </div>
+        <div class="create-topic">
+            <a class="btn btn-info" asp-controller="Topics" asp-action="CreateTopicandPost" asp-route-id="@Model.Category.Id"> + New Topic</a>
         </div>
     </div>
-    <div class="create-topic">
-        <a class="btn btn-info" asp-controller="Topics" asp-action="Create" asp-route-id="@Model.Category.Id"> + New Topic</a>
-    </div>
-</div>
 
 <table class="table table-hover">
     <thead>

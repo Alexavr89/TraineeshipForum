@@ -8,6 +8,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using TraineeshipForum.Data;
 using TraineeshipForum.Models;
+using TraineeshipForum.Models.Actions;
+using TraineeshipForum.Models.Actions.WithPosts;
 using TraineeshipForum.Models.Actions.WithTopics;
 using TraineeshipForum.Models.Entities;
 using TraineeshipForum.Models.Pages;
@@ -102,46 +104,54 @@ namespace TraineeshipForum.Controllers
             };
         }
 
-        // GET: Topics/Create
         [Authorize]
-        public IActionResult Create(int id)
+        public IActionResult CreateTopicandPost(int id)
         {
-            var model = new NewTopic
+            var model = new NewTopicandPost
             {
                 CategoryId = id,
             };
             return View(model);
         }
 
-        // POST: Topics/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Title,Created,UserId")] NewTopic topic, int id)
+        public async Task<IActionResult> CreateTopicandPost(int id, NewTopicandPost topicandpost, NewTopic topic, NewPost post)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var userId = _userManager.GetUserId(User);
-                    var user = _userManager.FindByIdAsync(userId).Result;
                     var category = _categoryService.GetById(id);
+                    var userId = _userManager.GetUserId(User);
+                    var user = _userManager.FindByIdAsync(userId);
 
                     topic.Category = category;
-                    topic.User = user;
+                    topic.User = await user;
                     topic.Created = DateTime.Now;
                     topic.CategoryId = id;
 
                     if (_context.Topics.Any(t => t.Title == topic.Title))
                     {
-                        ModelState.AddModelError("Title", "Topic with this title already exists");
-                        return View(topic);
+                        ModelState.AddModelError("Topic.Title", "Topic with this title already exists");
+                        return View(topicandpost);
                     }
                     _context.Add(topic);
                     await _context.SaveChangesAsync();
 
-                    return RedirectToAction("Create", "Posts", new { id = topic.Id });
+                    post.User = await user;
+                    post.Created = DateTime.Now;
+                    post.Topic = topic;
+
+                    if (_context.Posts.Any(p => p.Content == post.Content))
+                    {
+                        ModelState.AddModelError("Post.Content", "Post with this content already exist");
+                        return View(topicandpost);
+                    }
+                    _context.Add(post);
+                    await _context.SaveChangesAsync();
+
+                    return RedirectToAction("PostsByTopic", "Posts", new { id = topic.Id });
                 }
             }
             catch (DataException /* dex */)
@@ -149,7 +159,7 @@ namespace TraineeshipForum.Controllers
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", "Unable to save changes.");
             }
-            return View(topic);
+            return View(topicandpost);
         }
 
         // GET: Topics/Edit/5
