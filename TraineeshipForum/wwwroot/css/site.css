@@ -160,6 +160,9 @@ body {
     float: right
 }
 
+.breadcrumbs {
+    padding-left: 115px;
+}
 
 /* PostsByTopic */
 .title {
