@@ -38,7 +38,9 @@
             </div>
         </nav>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow breadcrumbs">
-                @Html.ActionLink("Home", "Index", "Home", null, new { @class = "px-1"})
+            @Html.ActionLink("Home", "Index", "Home", null, new { @class = "px-1" })
+            @if (ViewContext.RouteData.Values["action"] != null)
+            {
                 @if (ViewContext.RouteData.Values["action"].ToString().Equals("TopicsByCategory") ^ ViewContext.RouteData.Values["action"].ToString().Equals("PostsByTopic"))
                 {
                     @:>@Html.ActionLink(ViewContext.ViewData["Category"].ToString(), "TopicsByCategory", "Topics", new { id = ViewContext.ViewData["CategoryId"] }, new { @class = "px-1" })
@@ -47,6 +49,7 @@
                 {
                     @:>@Html.ActionLink(ViewContext.ViewData["Topic"].ToString(), "PostsByTopic", "Posts", new { id = ViewContext.ViewData["TopicId"] }, new { @class = "px-1" })
                 }
+            }
         </nav>
     </header>
     <div class="container d-flex flex-column">
