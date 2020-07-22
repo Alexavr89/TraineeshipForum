@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Data;
 using System.Threading.Tasks;
 using TraineeshipForum.Models;
 using TraineeshipForum.Models.Actions.WithRoles;
@@ -29,25 +30,33 @@ namespace TraineeshipForum.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateRole(CreateRole model)
         {
-            if (ModelState.IsValid)
+            try 
             {
-                IdentityRole identityRole = new IdentityRole
+                if (ModelState.IsValid)
                 {
-                    Name = model.RoleName
-                };
+                    IdentityRole identityRole = new IdentityRole
+                    {
+                        Name = model.RoleName
+                    };
 
-                IdentityResult result = await _roleManager.CreateAsync(identityRole);
+                    IdentityResult result = await _roleManager.CreateAsync(identityRole);
 
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("ListRoles", "Administration");
-                }
-                foreach (IdentityError error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("ListRoles", "Administration");
+                    }
+                    foreach (IdentityError error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
                 }
             }
-
+            catch (DataException /* dex */)
+            {
+                //Log the error (uncomment dex variable name and add a line here to write a log.
+                ModelState.AddModelError("", "Unable to save changes. Try again...");
+            }
+            
             return View(model);
         }
 
@@ -71,14 +80,22 @@ namespace TraineeshipForum.Controllers
                 Id = role.Id,
                 RoleName = role.Name
             };
-
-            foreach (var user in _userManager.Users)
+            try
             {
-                if (await _userManager.IsInRoleAsync(user, role.Name))
+                foreach (var user in _userManager.Users)
                 {
-                    model.Users.Add(user.UserName);
+                    if (await _userManager.IsInRoleAsync(user, role.Name))
+                    {
+                        model.Users.Add(user.UserName);
+                    }
                 }
             }
+            catch (DataException /* dex */)
+            {
+                //Log the error (uncomment dex variable name and add a line here to write a log.
+                ModelState.AddModelError("", "Unable to save changes.");
+            }
+
             return View(model);
         }
 
@@ -108,8 +125,8 @@ namespace TraineeshipForum.Controllers
 
                 return View(model);
             }
-
         }
+
         public async Task<IActionResult> EditUsersInRole(string roleId)
         {
             ViewBag.roleId = roleId;
@@ -121,25 +138,32 @@ namespace TraineeshipForum.Controllers
             }
 
             var model = new List<UserRole>();
-
-            foreach (var user in _userManager.Users)
+            try
             {
-                var userRole = new UserRole
+                foreach (var user in _userManager.Users)
                 {
-                    UserId = user.Id,
-                    UserName = user.UserName
-                };
+                    var userRole = new UserRole
+                    {
+                        UserId = user.Id,
+                        UserName = user.UserName
+                    };
 
-                if (await _userManager.IsInRoleAsync(user, role.Name))
-                {
-                    userRole.IsSelected = true;
-                }
-                else
-                {
-                    userRole.IsSelected = false;
-                }
+                    if (await _userManager.IsInRoleAsync(user, role.Name))
+                    {
+                        userRole.IsSelected = true;
+                    }
+                    else
+                    {
+                        userRole.IsSelected = false;
+                    }
 
-                model.Add(userRole);
+                    model.Add(userRole);
+                }
+            }
+            catch (DataException/* dex */)
+            {
+                //Log the error (uncomment dex variable name and add a line here to write a log.
+                ModelState.AddModelError("", "Unable to save changes.");
             }
             return View(model);
         }
@@ -207,26 +231,34 @@ namespace TraineeshipForum.Controllers
         {
             var role = await _roleManager.FindByIdAsync(id);
 
-            if (role == null)
+            try
             {
-                return NotFound();
+                if (role == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    var result = await _roleManager.DeleteAsync(role);
+
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("ListRoles");
+                    }
+
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+                }
             }
-            else
+            catch (DataException/* dex */)
             {
-                var result = await _roleManager.DeleteAsync(role);
-
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("ListRoles");
-                }
-
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
-                }
-
+                //Log the error (uncomment dex variable name and add a line here to write a log.
+                return RedirectToAction("ListRoles", new { id, saveChangesError = true });
+            }
+            
                 return View("ListRoles");
-            }
         }
     }
 }
