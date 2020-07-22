@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
@@ -93,14 +92,15 @@ namespace TraineeshipForum.Controllers
             {
                 if (ModelState.IsValid)
                 {
+
+                    var topic = _topicService.GetById(id);
                     var userId = _userManager.GetUserId(User);
                     var user = _userManager.FindByIdAsync(userId).Result;
-                    var topic = _topicService.GetById(id);
 
-                    post.Topic = topic;
                     post.User = user;
-                    post.Created = DateTime.Now;
+                    post.Topic = topic;
                     post.TopicId = id;
+
 
                     if (_context.Posts.Any(p => p.Content == post.Content))
                     {
@@ -108,8 +108,7 @@ namespace TraineeshipForum.Controllers
                         return View(post);
                     }
 
-                    _context.Add(post);
-                    await _context.SaveChangesAsync();
+                    await _postService.Add(post);
 
                     return RedirectToAction("PostsByTopic", "Posts", new { id = post.Topic.Id });
                 }
@@ -215,8 +214,7 @@ namespace TraineeshipForum.Controllers
 
             try
             {
-                _context.Entry(postToDelete).State = EntityState.Deleted;
-                await _context.SaveChangesAsync();
+                await _postService.Delete(id);
             }
             catch (DataException/* dex */)
             {
