@@ -14,6 +14,6 @@ namespace TraineeshipForum.Models.Actions.WithRoles
         [Required(ErrorMessage = "Role name is required")]
         [Display(Name = "Role Name")]
         public string RoleName { get; set; }
-        public List<string> Users { get; set; } //explain this later 
+        public List<string> Users { get; set; }
     }
 }
