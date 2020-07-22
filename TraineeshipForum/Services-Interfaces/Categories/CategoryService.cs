@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using TraineeshipForum.Data;
 using TraineeshipForum.Models.Entities;
 
@@ -12,6 +14,21 @@ namespace TraineeshipForum.Services_Interfaces.Categories
         public CategoryService(ApplicationDbContext context)
         {
             _context = context;
+        }
+
+        public async Task Add(Category category)
+        {
+            category.Created = DateTime.Now;
+
+            _context.Add(category);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task Delete(int id)
+        {
+            Category categoryToDelete = new Category() { Id = id };
+            _context.Entry(categoryToDelete).State = EntityState.Deleted;
+            await _context.SaveChangesAsync();
         }
 
         public IEnumerable<Category> GetAll()

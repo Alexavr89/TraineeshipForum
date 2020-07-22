@@ -7,16 +7,19 @@ using System.Linq;
 using System.Threading.Tasks;
 using TraineeshipForum.Data;
 using TraineeshipForum.Models.Entities;
+using TraineeshipForum.Services_Interfaces.Categories;
 
 namespace TraineeshipForum.Controllers
 {
     public class CategoriesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly ICategory _categoryService;
 
-        public CategoriesController(ApplicationDbContext context)
+        public CategoriesController(ApplicationDbContext context, ICategory categoryService)
         {
             _context = context;
+            _categoryService = categoryService;
         }
 
         // GET: Categories
@@ -48,10 +51,8 @@ namespace TraineeshipForum.Controllers
                         ModelState.AddModelError("Title", "Category with this title already exists");
                         return View(category);
                     }
-                    category.Created = DateTime.Now;
 
-                    _context.Add(category);
-                    await _context.SaveChangesAsync();
+                    await _categoryService.Add(category);
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -134,10 +135,7 @@ namespace TraineeshipForum.Controllers
         {
             try
             {
-                Category categoryToDelete = new Category() { Id = id };
-
-                _context.Entry(categoryToDelete).State = EntityState.Deleted;
-                await _context.SaveChangesAsync();
+               await _categoryService.Delete(id);
             }
             catch (DataException/* dex */)
             {
