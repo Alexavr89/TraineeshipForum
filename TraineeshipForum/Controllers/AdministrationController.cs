@@ -30,7 +30,7 @@ namespace TraineeshipForum.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateRole(CreateRole model)
         {
-            try 
+            try
             {
                 if (ModelState.IsValid)
                 {
@@ -56,7 +56,7 @@ namespace TraineeshipForum.Controllers
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 ModelState.AddModelError("", "Unable to save changes. Try again...");
             }
-            
+
             return View(model);
         }
 
@@ -257,8 +257,8 @@ namespace TraineeshipForum.Controllers
                 //Log the error (uncomment dex variable name and add a line here to write a log.
                 return RedirectToAction("ListRoles", new { id, saveChangesError = true });
             }
-            
-                return View("ListRoles");
+
+            return View("ListRoles");
         }
     }
 }

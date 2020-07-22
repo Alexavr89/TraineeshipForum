@@ -17,6 +17,6 @@ namespace TraineeshipForum.Models
         [Display(Name = "Author")]
         public string AuthorName { get; set; }
         public string LastPostCreated { get; set; }
-        public double TimeFromLastPost { get; set; } 
+        public double TimeFromLastPost { get; set; }
     }
 }
