@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using TraineeshipForum.Data;
 using TraineeshipForum.Models.Entities;
 
@@ -13,6 +15,20 @@ namespace TraineeshipForum.Services_Interfaces.Topics
         public TopicService(ApplicationDbContext context)
         {
             _context = context;
+        }
+
+        public async Task Add(Topic topic)
+        {
+            topic.Created = DateTime.Now;
+            _context.Add(topic);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task Delete(int id)
+        {
+            var topicToDelete = GetById(id);
+            _context.Entry(topicToDelete).State = EntityState.Deleted;
+            await _context.SaveChangesAsync();
         }
 
         public IEnumerable<Topic> GetAllTopics()

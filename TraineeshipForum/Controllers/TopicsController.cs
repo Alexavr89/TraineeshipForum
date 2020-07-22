@@ -14,6 +14,7 @@ using TraineeshipForum.Models.Actions.WithTopics;
 using TraineeshipForum.Models.Entities;
 using TraineeshipForum.Models.Pages;
 using TraineeshipForum.Services_Interfaces.Categories;
+using TraineeshipForum.Services_Interfaces.Posts;
 using TraineeshipForum.Services_Interfaces.Topics;
 
 namespace TraineeshipForum.Controllers
@@ -23,15 +24,17 @@ namespace TraineeshipForum.Controllers
         private readonly ApplicationDbContext _context;
         private readonly ITopic _topicService;
         private readonly ICategory _categoryService;
+        private readonly IPost _postService;
 
         private static UserManager<ApplicationUser> _userManager;
 
-        public TopicsController(ApplicationDbContext context, ITopic topicService, ICategory categoryService, UserManager<ApplicationUser> userManager)
+        public TopicsController(ApplicationDbContext context, ITopic topicService, ICategory categoryService, UserManager<ApplicationUser> userManager, IPost postService)
         {
             _context = context;
             _topicService = topicService;
             _categoryService = categoryService;
             _userManager = userManager;
+            _postService = postService;
         }
 
         // GET: Topics
@@ -128,7 +131,6 @@ namespace TraineeshipForum.Controllers
 
                     topic.Category = category;
                     topic.User = await user;
-                    topic.Created = DateTime.Now;
                     topic.CategoryId = id;
 
                     if (_context.Topics.Any(t => t.Title == topic.Title))
@@ -136,11 +138,9 @@ namespace TraineeshipForum.Controllers
                         ModelState.AddModelError("Topic.Title", "Topic with this title already exists");
                         return View(topicandpost);
                     }
-                    _context.Add(topic);
-                    await _context.SaveChangesAsync();
+                    await _topicService.Add(topic);
 
                     post.User = await user;
-                    post.Created = DateTime.Now;
                     post.Topic = topic;
 
                     if (_context.Posts.Any(p => p.Content == post.Content))
@@ -148,8 +148,7 @@ namespace TraineeshipForum.Controllers
                         ModelState.AddModelError("Post.Content", "Post with this content already exist");
                         return View(topicandpost);
                     }
-                    _context.Add(post);
-                    await _context.SaveChangesAsync();
+                    await _postService.Add(post);
 
                     return RedirectToAction("PostsByTopic", "Posts", new { id = topic.Id });
                 }
@@ -255,8 +254,7 @@ namespace TraineeshipForum.Controllers
 
             try
             {
-                _context.Entry(topicToDelete).State = EntityState.Deleted;
-                await _context.SaveChangesAsync();
+                await _topicService.Delete(id);
             }
             catch (DataException/* dex */)
             {
