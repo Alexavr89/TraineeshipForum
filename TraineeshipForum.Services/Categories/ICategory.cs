@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using TraineeshipForum.Models.Entities;
 
-namespace TraineeshipForum.Services_Interfaces.Categories
+namespace TraineeshipForum.Services.Categories
 {
     public interface ICategory
     {

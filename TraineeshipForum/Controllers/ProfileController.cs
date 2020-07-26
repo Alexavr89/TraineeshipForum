@@ -9,8 +9,8 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using TraineeshipForum.Models;
 using TraineeshipForum.Models.Entities;
-using TraineeshipForum.Services_Interfaces.Upload;
-using TraineeshipForum.Services_Interfaces.User;
+using TraineeshipForum.Services.Upload;
+using TraineeshipForum.Services.User;
 
 namespace TraineeshipForum.Controllers
 {

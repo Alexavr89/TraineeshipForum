@@ -2,7 +2,7 @@
 using Microsoft.Azure.Storage.Blob;
 using Microsoft.Extensions.Configuration;
 
-namespace TraineeshipForum.Services_Interfaces.Upload
+namespace TraineeshipForum.Services.Upload
 {
     public class UploadService : IUpload
     {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Azure.Storage.Blob;
 
-namespace TraineeshipForum.Services_Interfaces.Upload
+namespace TraineeshipForum.Services.Upload
 {
     public interface IUpload
     {

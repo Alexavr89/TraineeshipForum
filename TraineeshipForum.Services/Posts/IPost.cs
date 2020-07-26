@@ -1,7 +1,7 @@
 ﻿using System.Threading.Tasks;
 using TraineeshipForum.Models.Entities;
 
-namespace TraineeshipForum.Services_Interfaces.Posts
+namespace TraineeshipForum.Services.Posts
 {
     public interface IPost
     {

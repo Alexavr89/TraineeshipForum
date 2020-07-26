@@ -10,9 +10,9 @@ using TraineeshipForum.Models;
 using TraineeshipForum.Models.Actions.WithPosts;
 using TraineeshipForum.Models.Entities;
 using TraineeshipForum.Models.Pages;
-using TraineeshipForum.Services_Interfaces.Categories;
-using TraineeshipForum.Services_Interfaces.Posts;
-using TraineeshipForum.Services_Interfaces.Topics;
+using TraineeshipForum.Services.Categories;
+using TraineeshipForum.Services.Posts;
+using TraineeshipForum.Services.Topics;
 
 namespace TraineeshipForum.Controllers
 {

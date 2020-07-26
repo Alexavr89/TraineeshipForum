@@ -13,12 +13,12 @@ using Microsoft.Extensions.Hosting;
 using System;
 using TraineeshipForum.Data;
 using TraineeshipForum.Models.Entities;
-using TraineeshipForum.Services_Interfaces.Categories;
-using TraineeshipForum.Services_Interfaces.EmailConfirmation;
-using TraineeshipForum.Services_Interfaces.Posts;
-using TraineeshipForum.Services_Interfaces.Topics;
-using TraineeshipForum.Services_Interfaces.Upload;
-using TraineeshipForum.Services_Interfaces.User;
+using TraineeshipForum.Services.Categories;
+using TraineeshipForum.Services.EmailConfirmation;
+using TraineeshipForum.Services.Posts;
+using TraineeshipForum.Services.Topics;
+using TraineeshipForum.Services.Upload;
+using TraineeshipForum.Services.User;
 using WebPWrecover.Services;
 
 namespace TraineeshipForum

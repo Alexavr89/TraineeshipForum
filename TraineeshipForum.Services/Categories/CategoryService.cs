@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using TraineeshipForum.Data;
 using TraineeshipForum.Models.Entities;
 
-namespace TraineeshipForum.Services_Interfaces.Categories
+namespace TraineeshipForum.Services.Categories
 {
     public class CategoryService : ICategory
     {

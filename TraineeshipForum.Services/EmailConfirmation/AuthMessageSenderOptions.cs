@@ -1,4 +1,4 @@
-﻿namespace TraineeshipForum.Services_Interfaces.EmailConfirmation
+﻿namespace TraineeshipForum.Services.EmailConfirmation
 {
     public class AuthMessageSenderOptions
     {

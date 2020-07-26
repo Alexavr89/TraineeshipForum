@@ -6,7 +6,7 @@ using System.Linq;
 using TraineeshipForum.Data;
 using TraineeshipForum.Models;
 using TraineeshipForum.Models.Pages;
-using TraineeshipForum.Services_Interfaces.Topics;
+using TraineeshipForum.Services.Topics;
 
 namespace TraineeshipForum.Controllers
 {

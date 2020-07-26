@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using TraineeshipForum.Data;
 using TraineeshipForum.Models.Entities;
 
-namespace TraineeshipForum.Services_Interfaces.Posts
+namespace TraineeshipForum.Services.Posts
 {
     public class PostService : IPost
     {

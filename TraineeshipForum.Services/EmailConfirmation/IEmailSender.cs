@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using System.Threading.Tasks;
-using TraineeshipForum.Services_Interfaces.EmailConfirmation;
+using TraineeshipForum.Services.EmailConfirmation;
 
 namespace WebPWrecover.Services
 {

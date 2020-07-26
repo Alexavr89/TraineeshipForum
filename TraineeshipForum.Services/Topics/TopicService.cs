@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using TraineeshipForum.Data;
 using TraineeshipForum.Models.Entities;
 
-namespace TraineeshipForum.Services_Interfaces.Topics
+namespace TraineeshipForum.Services.Topics
 {
     public class TopicService : ITopic
     {

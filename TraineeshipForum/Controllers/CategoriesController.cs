@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using TraineeshipForum.Data;
 using TraineeshipForum.Models.Entities;
-using TraineeshipForum.Services_Interfaces.Categories;
+using TraineeshipForum.Services.Categories;
 
 namespace TraineeshipForum.Controllers
 {
@@ -135,7 +134,7 @@ namespace TraineeshipForum.Controllers
         {
             try
             {
-               await _categoryService.Delete(id);
+                await _categoryService.Delete(id);
             }
             catch (DataException/* dex */)
             {

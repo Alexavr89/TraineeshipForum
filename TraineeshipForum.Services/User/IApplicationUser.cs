@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TraineeshipForum.Models.Entities;
 
-namespace TraineeshipForum.Services_Interfaces.User
+namespace TraineeshipForum.Services.User
 {
     public interface IApplicationUser
     {
