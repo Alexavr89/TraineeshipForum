@@ -49,7 +49,8 @@ namespace TraineeshipForum
             services.AddScoped<IApplicationUser, ApplicationUserService>();
             services.AddScoped<IUpload, UploadService>();
             services.AddSingleton(Configuration);
-
+            services.AddControllers()
+            .AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddTransient<IEmailSender, EmailSender>();
             services.Configure<AuthMessageSenderOptions>(Configuration);
             services.AddDbContext<ApplicationDbContext>(options =>
