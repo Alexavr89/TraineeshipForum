@@ -50,22 +50,21 @@ namespace TraineeshipForum.Api
 
         // POST api/<PostsApiController>
         [HttpPost]
-        public async Task<IActionResult> Post(int id, string userId, [FromBody] NewPost post)
+        public async Task<IActionResult> Post([FromBody] NewPost post)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var topic = _topicService.GetById(id);
-                    var user = _userManager.FindByIdAsync(userId).Result;
+                    var topic = _topicService.GetById(post.TopicId);
+                    var user = _userManager.FindByIdAsync(post.User.Id).Result;
 
                     post.User = user;
                     post.Topic = topic;
-                    post.TopicId = id;
 
                     if (_context.Posts.Any(p => p.Content == post.Content))
                     {
-                        ModelState.AddModelError("Content", "Post with this content already exist");
+                        return BadRequest("Post with this content already exist");
                     }
 
                     await _postService.Add(post);
@@ -75,7 +74,7 @@ namespace TraineeshipForum.Api
             catch (DataException /* dex */)
             {
                 //Log the error (uncomment dex variable name and add a line here to write a log.
-                ModelState.AddModelError("", "Unable to save changes. Try again...");
+                return BadRequest("Unable to save changes. Try again...");
             }
             return CreatedAtAction(nameof(Get), new { id = post.Id }, post);
         }
@@ -85,23 +84,19 @@ namespace TraineeshipForum.Api
         public async Task<IActionResult> Put(int id, [FromBody] NewPost post)
         {
             var postToUpdate = _postService.GetById(id);
-            if (await TryUpdateModelAsync(postToUpdate,
-                "",
-                p => p.Content))
+            if (_context.Posts.Any(p => p.Content == post.Content))
             {
-                if (_context.Posts.Any(p => p.Content == post.Content))
-                {
-                    ModelState.AddModelError("Content", "Post with this content already exist");
-                }
-                try
-                {
-                    await _context.SaveChangesAsync();
-                }
-                catch (DataException /* dex */)
-                {
-                    //Log the error (uncomment dex variable name and add a line here to write a log.
-                    ModelState.AddModelError("", "Unable to save changes.");
-                }
+                return BadRequest("Post with this content already exist");
+            }
+            try
+            {
+                postToUpdate.Content = post.Content;
+                await _context.SaveChangesAsync();
+            }
+            catch (DataException /* dex */)
+            {
+                //Log the error (uncomment dex variable name and add a line here to write a log.
+                return BadRequest("Unable to save changes.");
             }
             return CreatedAtAction(nameof(Get), new { id = postToUpdate.Id }, postToUpdate);
         }
@@ -122,7 +117,7 @@ namespace TraineeshipForum.Api
             catch (DataException/* dex */)
             {
                 //Log the error (uncomment dex variable name and add a line here to write a log.
-                ModelState.AddModelError("", "Unable to delete. Try again...");
+                return BadRequest("Unable to delete. Try again...");
             }
             return NoContent();
         }

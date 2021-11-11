@@ -8,7 +8,6 @@ using TraineeshipForum.Data;
 using TraineeshipForum.Models.Actions.WithTopics;
 using TraineeshipForum.Models.Entities;
 using TraineeshipForum.Services.Categories;
-using TraineeshipForum.Services.Posts;
 using TraineeshipForum.Services.Topics;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -46,22 +45,21 @@ namespace TraineeshipForum.Api
 
         // POST api/<TopicsApiController>
         [HttpPost]
-        public async Task<IActionResult> Post(int id, string userId, [FromBody] NewTopic topic)
+        public async Task<IActionResult> Post([FromBody] NewTopic topic)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var category = _categoryService.GetById(id);
-                    var user = _userManager.FindByIdAsync(userId);
+                    var category = _categoryService.GetById(topic.CategoryId);
+                    var user = _userManager.FindByIdAsync(topic.User.Id);
 
                     topic.Category = category;
                     topic.User = await user;
-                    topic.CategoryId = id;
 
                     if (_context.Topics.Any(t => t.Title == topic.Title))
                     {
-                        ModelState.AddModelError("Topic.Title", "Topic with this title already exists");
+                        return BadRequest("Topic with this title already exists");
                     }
                     await _topicService.Add(topic);
                     await _context.SaveChangesAsync();
@@ -70,7 +68,7 @@ namespace TraineeshipForum.Api
             catch (DataException /* dex */)
             {
                 //Log the error (uncomment dex variable name and add a line here to write a log.
-                ModelState.AddModelError("", "Unable to save changes.");
+                return BadRequest("Unable to save changes.");
             }
             return CreatedAtAction(nameof(Get), new { id = topic.Id }, topic);
         }
@@ -81,24 +79,12 @@ namespace TraineeshipForum.Api
         public async Task<IActionResult> Put(int id, [FromBody] NewTopic topic)
         {
             var topicToUpdate = _topicService.GetById(id);
-            if (await TryUpdateModelAsync(topicToUpdate,
-                "",
-                t => t.Title))
+            if (_context.Topics.Any(t => t.Title == topic.Title))
             {
-                if (_context.Topics.Any(t => t.Title == topicToUpdate.Title))
-                {
-                    ModelState.AddModelError("Title", "Topic with this title already exists");
-                }
-                try
-                {
-                    await _context.SaveChangesAsync();
-                }
-                catch (DataException /* dex */)
-                {
-                    //Log the error (uncomment dex variable name and add a line here to write a log.
-                    ModelState.AddModelError("", "Unable to save changes. Try again...");
-                }
+                return BadRequest("Topic with this title already exists");
             }
+            topicToUpdate.Title = topic.Title;
+            await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(Get), new { id = topicToUpdate.Id }, topicToUpdate);
         }
 
@@ -118,7 +104,7 @@ namespace TraineeshipForum.Api
             catch (DataException/* dex */)
             {
                 //Log the error (uncomment dex variable name and add a line here to write a log.
-                ModelState.AddModelError("", "Unable to delete. Try again...");
+                return BadRequest("Unable to delete. Try again...");
             }
             return NoContent();
         }

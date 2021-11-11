@@ -38,7 +38,7 @@ namespace TraineeshipForum.Api
 
         // POST api/<AdministrationApiController>
         [HttpPost]
-        public async Task<IActionResult> Post(string id, [FromBody] CreateRole role)
+        public async Task<IActionResult> Post([FromBody] CreateRole role)
         {
             try
             {
@@ -49,24 +49,16 @@ namespace TraineeshipForum.Api
                         Name = role.RoleName
                     };
 
-                    IdentityResult result = await _roleManager.CreateAsync(identityRole);
-
-                    if (result.Succeeded)
-                    {
-                        return RedirectToAction("ListRoles", "Administration");
-                    }
-                    foreach (IdentityError error in result.Errors)
-                    {
-                        ModelState.AddModelError("", error.Description);
-                    }
+                    await _roleManager.CreateAsync(identityRole);
+                    await _context.SaveChangesAsync();
                 }
             }
             catch (DataException /* dex */)
             {
                 //Log the error (uncomment dex variable name and add a line here to write a log.
-                ModelState.AddModelError("", "Unable to save changes. Try again...");
+                return BadRequest("Unable to save changes. Try again...");
             }
-            return CreatedAtAction(nameof(Get), new { id }, role);
+            return Ok();
         }
 
         // PUT api/<AdministrationApiController>/5
@@ -81,14 +73,16 @@ namespace TraineeshipForum.Api
             }
             else
             {
-                role.Name = model.RoleName;
-                var result = await _roleManager.UpdateAsync(role);
-
-                foreach (var error in result.Errors)
+                try
                 {
-                    ModelState.AddModelError("", error.Description);
+                    role.Name = model.RoleName;
+                    await _roleManager.UpdateAsync(role);
+                    await _context.SaveChangesAsync();
                 }
-
+                catch (DataException)
+                {
+                    return BadRequest("Unable to save changes");
+                }
                 return CreatedAtAction(nameof(Get), new { id = model.Id }, model);
             }
         }
@@ -111,7 +105,7 @@ namespace TraineeshipForum.Api
             catch (DataException/* dex */)
             {
                 //Log the error (uncomment dex variable name and add a line here to write a log.
-                ModelState.AddModelError("", "Unable to delete. Try again...");
+                return BadRequest("Unable to delete. Try again...");
             }
             return NoContent();
         }

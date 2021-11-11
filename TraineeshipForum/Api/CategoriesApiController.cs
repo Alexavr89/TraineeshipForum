@@ -56,9 +56,9 @@ namespace TraineeshipForum.Api
             catch (DataException /* dex */)
             {
                 //Log the error (uncomment dex variable name and add a line here to write a log.
-                ModelState.AddModelError("", "Unable to save changes. Try again...");
+                return BadRequest("Unable to save changes. Try again...");
             }
-            return CreatedAtAction(nameof(Get), new { id = category.Id }, category); ;
+            return CreatedAtAction(nameof(Get), new { id = category.Id }, category);
         }
 
         // PUT api/<CategoriesApiController>/5
@@ -66,24 +66,20 @@ namespace TraineeshipForum.Api
         public async Task<IActionResult> Put(int id, [FromBody] Category category)
         {
             var categoryToUpdate = _context.Categories.Find(id);
-
-            if (await TryUpdateModelAsync(categoryToUpdate,
-                "",
-                c => c.Title, c => c.Description))
+            if (_context.Categories.Any(c => c.Title == categoryToUpdate.Title))
             {
-                if (_context.Categories.Any(c => c.Title == categoryToUpdate.Title))
-                {
-                    ModelState.AddModelError("Title", "Category with this title already exists");
-                }
-                try
-                {
-                    await _context.SaveChangesAsync();
-                }
-                catch (DataException /* dex */)
-                {
-                    //Log the error (uncomment dex variable name and add a line here to write a log.
-                    ModelState.AddModelError("", "Unable to save changes.");
-                }
+                return BadRequest("Category with this title already exists");
+            }
+            try
+            {
+                categoryToUpdate.Title = category.Title;
+                categoryToUpdate.Description = category.Description;
+                await _context.SaveChangesAsync();
+            }
+            catch (DataException /* dex */)
+            {
+                //Log the error (uncomment dex variable name and add a line here to write a log.
+                return BadRequest("Unable to save changes.");
             }
             return CreatedAtAction(nameof(Get), new { id = categoryToUpdate.Id }, categoryToUpdate);
         }
@@ -104,7 +100,7 @@ namespace TraineeshipForum.Api
             catch (DataException/* dex */)
             {
                 //Log the error (uncomment dex variable name and add a line here to write a log.
-                ModelState.AddModelError("", "Unable to delete. Try again...");
+                return BadRequest("Unable to delete. Try again...");
             }
             return NoContent();
         }
